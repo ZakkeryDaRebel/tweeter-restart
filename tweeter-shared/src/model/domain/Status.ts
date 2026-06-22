@@ -66,23 +66,37 @@ export class Status {
   }
 
   private static parseUrlReferences(post: string): PostSegment[] {
+    return this.parseReferences(
+      post,
+      (post: string) => {
+        return Status.parseUrls(post);
+      },
+      Type.url,
+    );
+  }
+
+  private static parseReferences(
+    post: string,
+    parseMethod: (post: string) => string[],
+    type: Type,
+  ): PostSegment[] {
     const references: PostSegment[] = [];
 
-    const urls: string[] = Status.parseUrls(post);
+    const referenceStrings: string[] = parseMethod(post);
 
     let previousStartIndex = 0;
 
-    for (let url of urls) {
-      let startIndex = post.indexOf(url, previousStartIndex);
+    for (let ref of referenceStrings) {
+      let startIndex = post.indexOf(ref, previousStartIndex);
 
       if (startIndex > -1) {
-        // Push the url
+        // Push the reference
         references.push(
-          new PostSegment(url, startIndex, startIndex + url.length, Type.url),
+          new PostSegment(ref, startIndex, startIndex + ref.length, type),
         );
 
-        // Move start and previous start past the url
-        startIndex = startIndex + url.length;
+        // Move start and previous start past the reference
+        startIndex = startIndex + ref.length;
         previousStartIndex = startIndex;
       }
     }
@@ -91,63 +105,36 @@ export class Status {
   }
 
   private static parseUrls(post: string): string[] {
-    const urls: string[] = [];
-
     const urlRegex: RegExp = /https?:\/\/[^\s<>"']+[a-zA-Z0-9]/g;
-    const matches: RegExpMatchArray | null = post.match(urlRegex);
+    return this.parseRegex(post, urlRegex);
+  }
+
+  private static parseRegex(post: string, regex: RegExp): string[] {
+    const regexMatches: string[] = [];
+    const matches: RegExpMatchArray | null = post.match(regex);
 
     if (matches) {
       for (let url of matches) {
-        urls.push(url);
+        regexMatches.push(url);
       }
     }
 
-    return urls;
+    return regexMatches;
   }
 
   private static parseMentionReferences(post: string): PostSegment[] {
-    const references: PostSegment[] = [];
-
-    const mentions: string[] = Status.parseMentions(post);
-
-    let previousStartIndex = 0;
-
-    for (let mention of mentions) {
-      let startIndex = post.indexOf(mention, previousStartIndex);
-
-      if (startIndex > -1) {
-        // Push the alias
-        references.push(
-          new PostSegment(
-            mention,
-            startIndex,
-            startIndex + mention.length,
-            Type.alias,
-          ),
-        );
-
-        // Move start and previous start past the mention
-        startIndex = startIndex + mention.length;
-        previousStartIndex = startIndex;
-      }
-    }
-
-    return references;
+    return this.parseReferences(
+      post,
+      (post: string) => {
+        return Status.parseMentions(post);
+      },
+      Type.alias,
+    );
   }
 
   private static parseMentions(post: string): string[] {
-    const mentions: string[] = [];
-
     const aliasRegex: RegExp = /@[a-zA-Z0-9]+/g;
-    const matches: RegExpMatchArray | null = post.match(aliasRegex);
-
-    if (matches) {
-      for (let url of matches) {
-        mentions.push(url);
-      }
-    }
-
-    return mentions;
+    return this.parseRegex(post, aliasRegex);
   }
 
   private static parseNewlines(post: string): PostSegment[] {
