@@ -106,31 +106,7 @@ export class FakeData {
 
         const post = `Post ${i} ${j}
         My friend ${mention.alias} likes this website: http://byu.edu. Do you? 
-        Or do you prefer this one: http://cs.byu.edu?. Normal Http -> Check out this url: http://www.google.com isn't it so cool!
-Normal Https -> That's unsecure, use https://www.google.com instead.
-
-Trailing Period -> Nah, this is cooler https://www.nasa.gov. Or maybe https://www.nasa.gov... is too fancy?
-Trailing Question Mark -> But what about non basic urls like https://byu.instructure.com/courses/33692?
-Trailing Comma -> But isn't this url, https://www.nasa.gov, going to break the old system?
-
-Query Strings -> http://localhost:8080/user?name=bob and https://example.com/query?x=a,b are both URLs with query strings
-
-Parenthesis -> This url (https://www.google.com) shouldn't grab the end parenthesis while this one should: https://en.wikipedia.org/wiki/Centre_(geometry). These will be the same for parenthesis, brackets, and braces!
-
-Emoji -> https://google.com🙂!
-
-Unicode text -> https://google.com你好
-
-Missing domain / hostname -> https://abc isn't a valid url and neither is https://$!!$ or https:///path 
-
-Invalid URLs -> https://-google.com and http://localhost:999999999 both wouldn't work
-
-No spaces -> IDon'tLikeToUseSpacesButILikehttp://www.google.comAndhttps://www.nasa.gov
-
-Colon -> https://en.wikipedia.org/wiki/Template:Welcome
-
-Mentions -> @amy, @amy!, @4my, @ amy
-`;
+        Or do you prefer this one: http://cs.byu.edu?`;
         const timestamp =
           timestampStart + 30000000000 * (i * this.fakeUsers.length + j);
         const status = new Status(post, sender, timestamp);
