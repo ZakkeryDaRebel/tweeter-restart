@@ -1,7 +1,7 @@
 import "./Toaster.css";
 import { useEffect } from "react";
 import { useContext } from "react";
-import { ToastListContext, ToastActionsContext } from "./ToastContexts";
+import { ToastListContext } from "./ToastContexts";
 import { Toast } from "react-bootstrap";
 import { useMessageActions } from "./MessageHooks";
 
