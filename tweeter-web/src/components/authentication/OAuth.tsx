@@ -44,3 +44,5 @@ const OAuth = (props: Props) => {
     </>
   );
 };
+
+export default OAuth;
