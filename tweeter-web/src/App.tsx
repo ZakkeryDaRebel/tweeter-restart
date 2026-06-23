@@ -12,7 +12,6 @@ import Login from "./components/authentication/login/Login";
 import Register from "./components/authentication/register/Register";
 import MainLayout from "./components/mainLayout/MainLayout";
 import Toaster from "./components/toaster/Toaster";
-import StoryScroller from "./components/mainLayout/StoryScroller";
 import UserItemScroller from "./components/mainLayout/UserItemScroller";
 import { AuthToken, User, FakeData, Status } from "tweeter-shared";
 import StatusItemScroller from "./components/mainLayout/StatusItemScroller";
@@ -71,6 +70,16 @@ const AuthenticatedRoutes = () => {
     return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
   };
 
+  const loadMoreStoryItems = async (
+    authToken: AuthToken,
+    userAlias: string,
+    pageSize: number,
+    lastItem: Status | null,
+  ): Promise<[Status[], boolean]> => {
+    // TODO: Replace with the result of calling server
+    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+  };
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
@@ -89,7 +98,17 @@ const AuthenticatedRoutes = () => {
             />
           }
         />
-        <Route path="story/:displayedUser" element={<StoryScroller />} />
+        <Route
+          path="story/:displayedUser"
+          element={
+            <StatusItemScroller
+              key={`story-${displayedUser!.alias}`}
+              itemDescription="story"
+              featureUrl="/story"
+              loadMore={loadMoreStoryItems}
+            />
+          }
+        />
         <Route
           path="followees/:displayedUser"
           element={
