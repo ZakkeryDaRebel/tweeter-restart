@@ -26,7 +26,14 @@ const Register = () => {
   const { displayToast } = useContext(ToastActionsContext);
 
   const checkSubmitButtonStatus = (): boolean => {
-    return !firstName || !lastName || !imageUrl || !imageFileExtension;
+    return (
+      !firstName ||
+      !lastName ||
+      !alias ||
+      !password ||
+      !imageUrl ||
+      !imageFileExtension
+    );
   };
 
   const registerOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -77,10 +84,6 @@ const Register = () => {
   };
 
   const doRegister = async () => {
-    if (!checkSubmitButtonStatus()) {
-      return;
-    }
-
     try {
       setIsLoading(true);
 
