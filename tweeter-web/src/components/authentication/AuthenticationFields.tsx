@@ -1,6 +1,5 @@
-import { useState } from "react";
-
 interface Props {
+  isBottomField: boolean;
   setAlias: (newAlias: string) => void;
   setPassword: (newPass: string) => void;
   checkAuthentication: (event: React.KeyboardEvent<HTMLElement>) => void;
@@ -21,10 +20,10 @@ const AuthenticationFields = (props: Props) => {
         />
         <label htmlFor="aliasInput">Alias</label>
       </div>
-      <div className="form-floating mb-3">
+      <div className={`form-floating ${props.isBottomField ? "mb-3" : ""}`}>
         <input
           type="password"
-          className="form-control bottom"
+          className={`form-control ${props.isBottomField ? "bottom" : ""}`}
           id="passwordInput"
           placeholder="Password"
           onKeyDown={props.checkAuthentication}
