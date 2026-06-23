@@ -3,8 +3,14 @@ import { ToastActionsContext } from "../toaster/ToastContexts";
 import { ToastType } from "../toaster/Toast";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconName } from "@fortawesome/fontawesome-svg-core";
 
-const OAuth = () => {
+interface Props {
+  name: string;
+  icon: IconName;
+}
+
+const OAuth = (props: Props) => {
   const { displayToast } = useContext(ToastActionsContext);
 
   const displayInfoMessageWithDarkBackground = (message: string): void => {
@@ -24,15 +30,15 @@ const OAuth = () => {
         className="btn btn-link btn-floating mx-1"
         onClick={() =>
           displayInfoMessageWithDarkBackground(
-            "LinkedIn registration is not implemented.",
+            `${props.name} registration is not implemented.`,
           )
         }
       >
         <OverlayTrigger
           placement="top"
-          overlay={<Tooltip id="linkedInTooltip">LinkedIn</Tooltip>}
+          overlay={<Tooltip id="linkedInTooltip">{props.name}</Tooltip>}
         >
-          <FontAwesomeIcon icon={["fab", "linkedin"]} />
+          <FontAwesomeIcon icon={["fab", `${props.icon}`]} />
         </OverlayTrigger>
       </button>
     </>
