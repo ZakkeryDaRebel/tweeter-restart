@@ -7,6 +7,7 @@ import { IconName } from "@fortawesome/fontawesome-svg-core";
 
 interface Props {
   name: string;
+  id: string;
   icon: IconName;
 }
 
@@ -36,7 +37,7 @@ const OAuth = (props: Props) => {
       >
         <OverlayTrigger
           placement="top"
-          overlay={<Tooltip id="linkedInTooltip">{props.name}</Tooltip>}
+          overlay={<Tooltip id={props.id}>{props.name}</Tooltip>}
         >
           <FontAwesomeIcon icon={["fab", `${props.icon}`]} />
         </OverlayTrigger>
