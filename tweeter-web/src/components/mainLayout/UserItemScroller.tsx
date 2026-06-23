@@ -13,7 +13,18 @@ import UserItem from "../userItem/UserItem";
 
 export const PAGE_SIZE = 10;
 
-const UserItemScroller = () => {
+interface Props {
+  itemDescription: string;
+  featureUrl: string;
+  loadMore: (
+    authToken: AuthToken,
+    userAlias: string,
+    pageSize: number,
+    lastItem: User | null,
+  ) => Promise<[User[], boolean]>;
+}
+
+const UserItemScroller = (props: Props) => {
   const { displayToast } = useContext(ToastActionsContext);
   const [items, setItems] = useState<User[]>([]);
   const [hasMoreItems, setHasMoreItems] = useState(true);
@@ -63,7 +74,7 @@ const UserItemScroller = () => {
 
   const loadMoreItems = async (lastItem: User | null) => {
     try {
-      const [newItems, hasMore] = await loadMoreFollowees(
+      const [newItems, hasMore] = await props.loadMore(
         authToken!,
         displayedUser!.alias,
         PAGE_SIZE,
@@ -76,20 +87,10 @@ const UserItemScroller = () => {
     } catch (error) {
       displayToast(
         ToastType.Error,
-        `Failed to load followees because of exception: ${error}`,
+        `Failed to load ${props.itemDescription} because of exception: ${error}`,
         0,
       );
     }
-  };
-
-  const loadMoreFollowees = async (
-    authToken: AuthToken,
-    userAlias: string,
-    pageSize: number,
-    lastFollowee: User | null,
-  ): Promise<[User[], boolean]> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfUsers(lastFollowee, pageSize, userAlias);
   };
 
   return (
@@ -106,7 +107,7 @@ const UserItemScroller = () => {
             key={index}
             className="row mb-3 mx-0 px-0 border rounded bg-white"
           >
-            <UserItem user={item} featurePath="/followees" />
+            <UserItem user={item} featurePath={props.featureUrl} />
           </div>
         ))}
       </InfiniteScroll>
