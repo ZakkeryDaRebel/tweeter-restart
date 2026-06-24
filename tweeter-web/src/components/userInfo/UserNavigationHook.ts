@@ -37,13 +37,9 @@ export const useUserNavigation = () => {
 
   const extractPath = (value: string): string => {
     const index = value.indexOf("@");
-    console.log("Value: ", value);
     const beforeIndex = value.substring(0, index - 1);
-    console.log("Before index: ", beforeIndex);
     const slashIndex = beforeIndex.lastIndexOf("/");
-    const featurePath = beforeIndex.substring(slashIndex);
-    console.log("Feature path: ", featurePath);
-    return featurePath;
+    return beforeIndex.substring(slashIndex);
   };
 
   const getUser = async (
