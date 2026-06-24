@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { User, AuthToken } from "tweeter-shared";
-import { UserInfoActionsContext } from "./UserInfoContexts";
+import { UserInfoActionsContext, UserInfoContext } from "./UserInfoContexts";
 
 interface UserInfoActions {
   updateUserInfo: (
@@ -30,4 +30,12 @@ export const useUserInfoActions = (): UserInfoActions => {
   };
 };
 
-export const useUserInfo = () => {};
+export const useUserInfo = () => {
+  const { currentUser, displayedUser, authToken } = useContext(UserInfoContext);
+
+  return {
+    currentUser,
+    displayedUser,
+    authToken,
+  };
+};
