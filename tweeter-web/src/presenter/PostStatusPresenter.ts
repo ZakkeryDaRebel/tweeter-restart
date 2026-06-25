@@ -9,17 +9,16 @@ export interface PostStatusView {
   ) => string;
   deleteMessage: (messageId: string) => void;
   setPost: (value: string) => void;
+  setIsLoading: (value: boolean) => void;
 }
 
 export class PostStatusPresenter {
   private _view: PostStatusView;
   private service: StatusService;
-  private _isLoading: boolean;
 
   public constructor(view: PostStatusView) {
     this._view = view;
     this.service = new StatusService();
-    this._isLoading = false;
   }
 
   public async submitPost(
@@ -30,7 +29,7 @@ export class PostStatusPresenter {
     var postingStatusToastId = "";
 
     try {
-      this._isLoading = true;
+      this._view.setIsLoading(true);
       postingStatusToastId = this._view.displayInfoMessage(
         "Posting status...",
         0,
@@ -48,11 +47,7 @@ export class PostStatusPresenter {
       );
     } finally {
       this._view.deleteMessage(postingStatusToastId);
-      this._isLoading = false;
+      this._view.setIsLoading(false);
     }
-  }
-
-  public get isLoading() {
-    return this._isLoading;
   }
 }
