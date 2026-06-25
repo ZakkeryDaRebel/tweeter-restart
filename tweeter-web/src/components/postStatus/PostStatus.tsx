@@ -13,12 +13,14 @@ const PostStatus = () => {
 
   const { currentUser, authToken } = useUserInfo();
   const [post, setPost] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const listener: PostStatusView = {
     displayInfoMessage: displayInfoMessage,
     displayErrorMessage: displayErrorMessage,
     deleteMessage: deleteMessage,
     setPost: setPost,
+    setIsLoading: setIsLoading,
   };
 
   const presenterRef = useRef<PostStatusPresenter | null>(null);
@@ -38,7 +40,15 @@ const PostStatus = () => {
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();
 
-    presenterRef.current!.submitPost(currentUser!, authToken!, post);
+    // Fun self code
+    if (!isLoading) {
+      presenterRef.current!.submitPost(currentUser!, authToken!, post);
+    } else {
+      displayInfoMessage(
+        "Please wait to post a status until after this one is finished",
+        2000,
+      );
+    }
   };
 
   return (
@@ -64,7 +74,7 @@ const PostStatus = () => {
           style={{ width: "8em" }}
           onClick={submitPost}
         >
-          {presenterRef.current!.isLoading ? (
+          {isLoading ? (
             <span
               className="spinner-border spinner-border-sm"
               role="status"
