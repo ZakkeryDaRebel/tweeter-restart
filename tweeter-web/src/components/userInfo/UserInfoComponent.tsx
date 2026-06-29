@@ -55,12 +55,7 @@ const UserInfo = () => {
   const switchToLoggedInUser = (event: React.MouseEvent): void => {
     event.preventDefault();
     setDisplayedUser(currentUser!);
-    navigate(`${getBaseUrl()}/${currentUser!.alias}`);
-  };
-
-  const getBaseUrl = (): string => {
-    const segments = location.pathname.split("/@");
-    return segments.length > 1 ? segments[0] : "/";
+    navigate(`${presenterRef.current!.getBaseUrl()}/${currentUser!.alias}`);
   };
 
   const followDisplayedUser = async (
