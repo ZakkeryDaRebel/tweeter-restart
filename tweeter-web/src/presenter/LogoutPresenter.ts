@@ -1,12 +1,9 @@
 import { AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
+import { View } from "./Presenter";
 
-export interface LogoutView {
+export interface LogoutView extends View {
   displayInfoMessage: (message: string, duration: number) => string;
-  displayErrorMessage: (
-    message: string,
-    bootstrapClasses?: string | undefined,
-  ) => string;
   deleteMessage: (messageId: string) => void;
   clearUserInfo: () => void;
   navigate: (featureUrl: string) => void;
