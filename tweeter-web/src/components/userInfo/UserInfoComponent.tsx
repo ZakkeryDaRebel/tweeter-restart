@@ -64,7 +64,15 @@ const UserInfo = () => {
   ): Promise<void> => {
     event.preventDefault();
 
-    presenterRef.current!.followDisplayedUser(displayedUser!, authToken!);
+    // Fun self code
+    if (!isLoading) {
+      presenterRef.current!.followDisplayedUser(displayedUser!, authToken!);
+    } else {
+      displayInfoMessage(
+        "Please wait to follow a user until after this one is finished",
+        2000,
+      );
+    }
   };
 
   const unfollowDisplayedUser = async (
@@ -72,7 +80,15 @@ const UserInfo = () => {
   ): Promise<void> => {
     event.preventDefault();
 
-    presenterRef.current!.unfollowDisplayedUser(displayedUser!, authToken!);
+    // Fun self code
+    if (!isLoading) {
+      presenterRef.current!.unfollowDisplayedUser(displayedUser!, authToken!);
+    } else {
+      displayInfoMessage(
+        "Please wait to unfollow a user until after this one is finished",
+        2000,
+      );
+    }
   };
 
   return (
