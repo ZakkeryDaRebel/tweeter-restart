@@ -1,15 +1,8 @@
 import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
-import {
-  LoadingView,
-  NavigateView,
-  Presenter,
-  UpdateUserView,
-  View,
-} from "./Presenter";
+import { AuthenticationView, Presenter } from "./Presenter";
 
-export interface RegisterView
-  extends View, LoadingView, NavigateView, UpdateUserView {
+export interface RegisterView extends AuthenticationView {
   setImageUrl: (url: string) => void;
 }
 
