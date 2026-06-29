@@ -1,12 +1,9 @@
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
+import { Presenter, View } from "./Presenter";
 
-export interface LoginView {
+export interface LoginView extends View {
   setIsLoading: (value: boolean) => void;
-  displayErrorMessage: (
-    message: string,
-    bootstrapClasses?: string | undefined,
-  ) => string;
   updateUserInfo: (
     currentUser: User,
     displayedUser: User | null,
