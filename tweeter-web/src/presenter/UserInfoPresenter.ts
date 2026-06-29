@@ -1,16 +1,13 @@
 import { AuthToken, User } from "tweeter-shared";
 import { FollowService } from "../model.service/FollowService";
 import { Location } from "react-router-dom";
+import { View } from "./Presenter";
 
-export interface UserInfoView {
+export interface UserInfoView extends View {
   setIsFollower: (isFollower: boolean) => void;
   setFolloweeCount: (count: number) => void;
   setFollowerCount: (count: number) => void;
   setIsLoading: (isLoading: boolean) => void;
-  displayErrorMessage: (
-    message: string,
-    bootstrapClasses?: string | undefined,
-  ) => string;
   displayInfoMessage: (
     message: string,
     duration: number,
