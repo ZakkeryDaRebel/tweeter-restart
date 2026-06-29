@@ -1,14 +1,10 @@
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
-import { ChangeEvent } from "react";
+import { View } from "./Presenter";
 
-export interface RegisterView {
+export interface RegisterView extends View {
   setIsLoading: (value: boolean) => void;
-  displayErrorMessage: (
-    message: string,
-    bootstrapClasses?: string | undefined,
-  ) => string;
   navigate: (featureUrl: string) => void;
   updateUserInfo: (
     currentUser: User,
