@@ -15,6 +15,10 @@ export interface LoadingView extends View {
   setIsLoading: (isLoading: boolean) => void;
 }
 
+export interface NavigateView extends View {
+  navigate: (featureUrl: string) => void;
+}
+
 export abstract class Presenter<V extends View> {
   private _view: V;
 
