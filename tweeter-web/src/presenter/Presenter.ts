@@ -21,6 +21,8 @@ export interface NavigateView extends View {
   navigate: (featureUrl: string) => void;
 }
 
+export interface LoadingMessage extends LoadingView, MessageView {}
+
 export interface UpdateUserView extends View {
   updateUserInfo: (
     currentUser: User,
