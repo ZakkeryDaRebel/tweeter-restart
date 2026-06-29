@@ -1,10 +1,8 @@
 import { AuthToken, Status, User } from "tweeter-shared";
 import { StatusService } from "../model.service/StatusService";
-import { Presenter, View } from "./Presenter";
+import { MessageView, Presenter, View } from "./Presenter";
 
-export interface PostStatusView extends View {
-  displayInfoMessage: (message: string, duration: number) => string;
-  deleteMessage: (messageId: string) => void;
+export interface PostStatusView extends MessageView {
   setPost: (value: string) => void;
   setIsLoading: (value: boolean) => void;
 }
