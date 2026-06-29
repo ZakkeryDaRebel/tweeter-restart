@@ -63,31 +63,7 @@ const UserInfo = () => {
   ): Promise<void> => {
     event.preventDefault();
 
-    var followingUserToast = "";
-
-    try {
-      setIsLoading(true);
-      followingUserToast = displayInfoMessage(
-        `Following ${displayedUser!.name}...`,
-        0,
-      );
-
-      const [followerCount, followeeCount] = await follow(
-        authToken!,
-        displayedUser!,
-      );
-
-      setIsFollower(true);
-      setFollowerCount(followerCount);
-      setFolloweeCount(followeeCount);
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to follow user because of exception: ${error}`,
-      );
-    } finally {
-      deleteMessage(followingUserToast);
-      setIsLoading(false);
-    }
+    presenterRef.current!.followDisplayedUser(displayedUser!, authToken!);
   };
 
   const unfollowDisplayedUser = async (
