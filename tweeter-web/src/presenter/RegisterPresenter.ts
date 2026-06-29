@@ -1,10 +1,9 @@
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
-import { LoadingView, Presenter, View } from "./Presenter";
+import { LoadingView, NavigateView, Presenter, View } from "./Presenter";
 
-export interface RegisterView extends View, LoadingView {
-  navigate: (featureUrl: string) => void;
+export interface RegisterView extends View, LoadingView, NavigateView {
   updateUserInfo: (
     currentUser: User,
     displayedUser: User | null,
