@@ -1,7 +1,7 @@
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
-import { View } from "./Presenter";
+import { Presenter, View } from "./Presenter";
 
 export interface RegisterView extends View {
   setIsLoading: (value: boolean) => void;
@@ -15,16 +15,15 @@ export interface RegisterView extends View {
   setImageUrl: (url: string) => void;
 }
 
-export class RegisterPresenter {
+export class RegisterPresenter extends Presenter<RegisterView> {
   private service: UserService;
-  private view: RegisterView;
   private _rememberMe: boolean;
   private imageBytes: Uint8Array;
   private imageFileExtension: string;
 
   public constructor(view: RegisterView) {
+    super(view);
     this.service = new UserService();
-    this.view = view;
     this._rememberMe = false;
     this.imageBytes = new Uint8Array();
     this.imageFileExtension = "";
@@ -36,27 +35,27 @@ export class RegisterPresenter {
     alias: string,
     password: string,
   ) {
-    try {
-      this.view.setIsLoading(true);
+    this.doFailureAndFinallyReportingOperation(
+      async () => {
+        this.view.setIsLoading(true);
 
-      const [user, authToken] = await this.service.register(
-        firstName,
-        lastName,
-        alias,
-        password,
-        this.imageBytes,
-        this.imageFileExtension,
-      );
+        const [user, authToken] = await this.service.register(
+          firstName,
+          lastName,
+          alias,
+          password,
+          this.imageBytes,
+          this.imageFileExtension,
+        );
 
-      this.view.updateUserInfo(user, user, authToken, this.rememberMe);
-      this.view.navigate(`/feed/${user.alias}`);
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to register user because of exception: ${error}`,
-      );
-    } finally {
-      this.view.setIsLoading(false);
-    }
+        this.view.updateUserInfo(user, user, authToken, this._rememberMe);
+        this.view.navigate(`/feed/${user.alias}`);
+      },
+      "register user",
+      () => {
+        this.view.setIsLoading(false);
+      },
+    );
   }
 
   public handleImageFile(file: File | undefined) {
