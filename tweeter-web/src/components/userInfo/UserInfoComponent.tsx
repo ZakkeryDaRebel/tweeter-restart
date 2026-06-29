@@ -34,7 +34,7 @@ const UserInfo = () => {
       displayedUser!,
     );
     presenterRef.current!.setNumbFollowees(authToken!, displayedUser!);
-    setNumbFollowers(authToken!, displayedUser!);
+    presenterRef.current!.setNumbFollowers(authToken!, displayedUser!);
   }, [displayedUser]);
 
   const listener: UserInfoView = {
@@ -51,19 +51,6 @@ const UserInfo = () => {
   if (!presenterRef.current) {
     presenterRef.current = new UserInfoPresenter(listener);
   }
-
-  const setNumbFollowers = async (
-    authToken: AuthToken,
-    displayedUser: User,
-  ) => {
-    try {
-      setFollowerCount(await getFollowerCount(authToken, displayedUser));
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to get followers count because of exception: ${error}`,
-      );
-    }
-  };
 
   const switchToLoggedInUser = (event: React.MouseEvent): void => {
     event.preventDefault();
