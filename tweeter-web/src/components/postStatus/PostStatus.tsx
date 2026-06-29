@@ -34,21 +34,13 @@ const PostStatus = () => {
   };
 
   const checkButtonStatus: () => boolean = () => {
-    return !post.trim() || !authToken || !currentUser;
+    return !post.trim() || !authToken || !currentUser || isLoading;
   };
 
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();
 
-    // Fun self code
-    if (!isLoading) {
-      presenterRef.current!.submitPost(currentUser!, authToken!, post);
-    } else {
-      displayInfoMessage(
-        "Please wait to post a status until after this one is finished",
-        2000,
-      );
-    }
+    presenterRef.current!.submitPost(currentUser!, authToken!, post);
   };
 
   return (
