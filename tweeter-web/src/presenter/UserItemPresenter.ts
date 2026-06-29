@@ -9,12 +9,7 @@ export interface UserItemView extends View {
 export abstract class UserItemPresenter extends Presenter<UserItemView> {
   private _hasMoreItems = true;
   private _lastItem: User | null = null;
-  private userService: UserService;
-
-  protected constructor(view: UserItemView) {
-    super(view);
-    this.userService = new UserService();
-  }
+  private userService: UserService = new UserService();
 
   protected get lastItem() {
     return this._lastItem;
