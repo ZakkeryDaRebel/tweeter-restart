@@ -25,8 +25,8 @@ export class PostStatusPresenter extends Presenter<PostStatusView> {
     var postingStatusToastId = "";
 
     try {
-      this._view.setIsLoading(true);
-      postingStatusToastId = this._view.displayInfoMessage(
+      this.view.setIsLoading(true);
+      postingStatusToastId = this.view.displayInfoMessage(
         "Posting status...",
         0,
       );
@@ -35,15 +35,15 @@ export class PostStatusPresenter extends Presenter<PostStatusView> {
 
       await this.service.postStatus(authToken!, status);
 
-      this._view.setPost("");
-      this._view.displayInfoMessage("Status posted!", 2000);
+      this.view.setPost("");
+      this.view.displayInfoMessage("Status posted!", 2000);
     } catch (error) {
-      this._view.displayErrorMessage(
+      this.view.displayErrorMessage(
         `Failed to post the status because of exception: ${error}`,
       );
     } finally {
-      this._view.deleteMessage(postingStatusToastId);
-      this._view.setIsLoading(false);
+      this.view.deleteMessage(postingStatusToastId);
+      this.view.setIsLoading(false);
     }
   }
 }
