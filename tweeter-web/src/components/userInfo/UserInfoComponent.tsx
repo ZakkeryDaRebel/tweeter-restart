@@ -28,8 +28,12 @@ const UserInfo = () => {
   }
 
   useEffect(() => {
-    setIsFollowerStatus(authToken!, currentUser!, displayedUser!);
-    setNumbFollowees(authToken!, displayedUser!);
+    presenterRef.current!.setIsFollowerStatus(
+      authToken!,
+      currentUser!,
+      displayedUser!,
+    );
+    presenterRef.current!.setNumbFollowees(authToken!, displayedUser!);
     setNumbFollowers(authToken!, displayedUser!);
   }, [displayedUser]);
 
@@ -47,39 +51,6 @@ const UserInfo = () => {
   if (!presenterRef.current) {
     presenterRef.current = new UserInfoPresenter(listener);
   }
-
-  const setIsFollowerStatus = async (
-    authToken: AuthToken,
-    currentUser: User,
-    displayedUser: User,
-  ) => {
-    try {
-      if (currentUser === displayedUser) {
-        setIsFollower(false);
-      } else {
-        setIsFollower(
-          await getIsFollowerStatus(authToken!, currentUser!, displayedUser!),
-        );
-      }
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to determine follower status because of exception: ${error}`,
-      );
-    }
-  };
-
-  const setNumbFollowees = async (
-    authToken: AuthToken,
-    displayedUser: User,
-  ) => {
-    try {
-      setFolloweeCount(await getFolloweeCount(authToken, displayedUser));
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to get followees count because of exception: ${error}`,
-      );
-    }
-  };
 
   const setNumbFollowers = async (
     authToken: AuthToken,
