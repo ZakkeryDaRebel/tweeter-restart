@@ -11,6 +11,10 @@ export interface MessageView extends View {
   deleteMessage: (messageId: string) => void;
 }
 
+export interface LoadingView extends View {
+  setIsLoading: (isLoading: boolean) => void;
+}
+
 export abstract class Presenter<V extends View> {
   private _view: V;
 
