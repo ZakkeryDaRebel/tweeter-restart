@@ -1,18 +1,17 @@
 import { AuthToken, User } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
-import { View } from "./Presenter";
+import { Presenter, View } from "./Presenter";
 
 export interface UserNavigationView extends View {
   setDisplayedUser: (user: User) => void;
   navigate: (featureUrl: string) => void;
 }
 
-export class UserNavigationPresenter {
-  private view: UserNavigationView;
+export class UserNavigationPresenter extends Presenter<UserNavigationView> {
   private service: UserService;
 
   public constructor(view: UserNavigationView) {
-    this.view = view;
+    super(view);
     this.service = new UserService();
   }
 
