@@ -1,10 +1,13 @@
 import "./UserInfoComponent.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "./UserInfoHooks";
-import { UserInfoView } from "../../presenter/UserInfoPresenter";
+import {
+  UserInfoPresenter,
+  UserInfoView,
+} from "../../presenter/UserInfoPresenter";
 
 const UserInfo = () => {
   const [isFollower, setIsFollower] = useState(false);
@@ -39,6 +42,11 @@ const UserInfo = () => {
     displayInfoMessage: displayInfoMessage,
     deleteMessage: deleteMessage,
   };
+
+  const presenterRef = useRef<UserInfoPresenter | null>(null);
+  if (!presenterRef.current) {
+    presenterRef.current = new UserInfoPresenter(listener);
+  }
 
   const setIsFollowerStatus = async (
     authToken: AuthToken,
