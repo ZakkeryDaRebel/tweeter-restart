@@ -1,5 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
 import { FollowService } from "../model.service/FollowService";
+import { Location } from "react-router-dom";
 
 export interface UserInfoView {
   setIsFollower: (isFollower: boolean) => void;
@@ -75,7 +76,7 @@ export class UserInfoPresenter {
     }
   }
 
-  getBaseUrl = (): string => {
+  getBaseUrl = (location: Location): string => {
     const segments = location.pathname.split("/@");
     return segments.length > 1 ? segments[0] : "/";
   };
