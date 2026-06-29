@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "./UserInfoHooks";
+import { UserInfoView } from "../../presenter/UserInfoPresenter";
 
 const UserInfo = () => {
   const [isFollower, setIsFollower] = useState(false);
@@ -29,6 +30,16 @@ const UserInfo = () => {
     setNumbFollowers(authToken!, displayedUser!);
   }, [displayedUser]);
 
+  const listener: UserInfoView = {
+    setIsFollower: setIsFollower,
+    setFolloweeCount: setFolloweeCount,
+    setFollowerCount: setFollowerCount,
+    setIsLoading: setIsLoading,
+    displayErrorMessage: displayErrorMessage,
+    displayInfoMessage: displayInfoMessage,
+    deleteMessage: deleteMessage,
+  };
+
   const setIsFollowerStatus = async (
     authToken: AuthToken,
     currentUser: User,
@@ -49,15 +60,6 @@ const UserInfo = () => {
     }
   };
 
-  const getIsFollowerStatus = async (
-    authToken: AuthToken,
-    user: User,
-    selectedUser: User,
-  ): Promise<boolean> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.isFollower();
-  };
-
   const setNumbFollowees = async (
     authToken: AuthToken,
     displayedUser: User,
@@ -71,14 +73,6 @@ const UserInfo = () => {
     }
   };
 
-  const getFolloweeCount = async (
-    authToken: AuthToken,
-    user: User,
-  ): Promise<number> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getFolloweeCount(user.alias);
-  };
-
   const setNumbFollowers = async (
     authToken: AuthToken,
     displayedUser: User,
@@ -90,14 +84,6 @@ const UserInfo = () => {
         `Failed to get followers count because of exception: ${error}`,
       );
     }
-  };
-
-  const getFollowerCount = async (
-    authToken: AuthToken,
-    user: User,
-  ): Promise<number> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getFollowerCount(user.alias);
   };
 
   const switchToLoggedInUser = (event: React.MouseEvent): void => {
@@ -143,21 +129,6 @@ const UserInfo = () => {
     }
   };
 
-  const follow = async (
-    authToken: AuthToken,
-    userToFollow: User,
-  ): Promise<[followerCount: number, followeeCount: number]> => {
-    // Pause so we can see the follow message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server
-
-    const followerCount = await getFollowerCount(authToken, userToFollow);
-    const followeeCount = await getFolloweeCount(authToken, userToFollow);
-
-    return [followerCount, followeeCount];
-  };
-
   const unfollowDisplayedUser = async (
     event: React.MouseEvent,
   ): Promise<void> => {
@@ -188,21 +159,6 @@ const UserInfo = () => {
       deleteMessage(unfollowingUserToast);
       setIsLoading(false);
     }
-  };
-
-  const unfollow = async (
-    authToken: AuthToken,
-    userToUnfollow: User,
-  ): Promise<[followerCount: number, followeeCount: number]> => {
-    // Pause so we can see the unfollow message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server
-
-    const followerCount = await getFollowerCount(authToken, userToUnfollow);
-    const followeeCount = await getFolloweeCount(authToken, userToUnfollow);
-
-    return [followerCount, followeeCount];
   };
 
   return (
