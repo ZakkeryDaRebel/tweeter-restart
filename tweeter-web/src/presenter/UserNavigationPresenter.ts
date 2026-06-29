@@ -1,13 +1,10 @@
 import { AuthToken, User } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
+import { View } from "./Presenter";
 
-export interface UserNavigationView {
+export interface UserNavigationView extends View {
   setDisplayedUser: (user: User) => void;
   navigate: (featureUrl: string) => void;
-  displayErrorMessage: (
-    message: string,
-    bootstrapClasses?: string | undefined,
-  ) => string;
 }
 
 export class UserNavigationPresenter {
