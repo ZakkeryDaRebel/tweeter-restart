@@ -1,6 +1,6 @@
 import { AuthToken, Status, User } from "tweeter-shared";
 import { StatusService } from "../model.service/StatusService";
-import { View } from "./Presenter";
+import { Presenter, View } from "./Presenter";
 
 export interface PostStatusView extends View {
   displayInfoMessage: (message: string, duration: number) => string;
@@ -9,12 +9,11 @@ export interface PostStatusView extends View {
   setIsLoading: (value: boolean) => void;
 }
 
-export class PostStatusPresenter {
-  private _view: PostStatusView;
+export class PostStatusPresenter extends Presenter<PostStatusView> {
   private service: StatusService;
 
   public constructor(view: PostStatusView) {
-    this._view = view;
+    super(view);
     this.service = new StatusService();
   }
 
