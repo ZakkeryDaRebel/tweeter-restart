@@ -22,6 +22,22 @@ export abstract class Presenter<V extends View> {
     }
   }
 
+  protected async doFailureAndFinallyReportingOperation(
+    operation: () => Promise<void>,
+    operationDescription: string,
+    finallyOperation: () => void,
+  ) {
+    try {
+      await operation();
+    } catch (error) {
+      this._view.displayErrorMessage(
+        `Failed to ${operationDescription} because of exception: ${error}`,
+      );
+    } finally {
+      finallyOperation();
+    }
+  }
+
   protected get view() {
     return this._view;
   }
