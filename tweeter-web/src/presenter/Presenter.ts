@@ -31,7 +31,7 @@ export interface UpdateUserView extends View {
 }
 
 export interface AuthenticationView
-  extends View, LoadingView, NavigateView, UpdateUserView {}
+  extends LoadingView, NavigateView, UpdateUserView {}
 
 export abstract class Presenter<V extends View> {
   private _view: V;
