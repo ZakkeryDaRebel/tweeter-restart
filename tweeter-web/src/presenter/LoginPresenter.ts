@@ -13,12 +13,11 @@ export interface LoginView extends View {
   navigate: (featureUrl: string) => void;
 }
 
-export class LoginPresenter {
+export class LoginPresenter extends Presenter<LoginView> {
   private service: UserService;
-  private view: LoginView;
 
   public constructor(view: LoginView) {
-    this.view = view;
+    super(view);
     this.service = new UserService();
   }
 
