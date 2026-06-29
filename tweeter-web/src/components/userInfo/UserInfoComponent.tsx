@@ -1,7 +1,6 @@
 import "./UserInfoComponent.css";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthToken, FakeData, User } from "tweeter-shared";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "./UserInfoHooks";
 import {
@@ -55,7 +54,9 @@ const UserInfo = () => {
   const switchToLoggedInUser = (event: React.MouseEvent): void => {
     event.preventDefault();
     setDisplayedUser(currentUser!);
-    navigate(`${presenterRef.current!.getBaseUrl()}/${currentUser!.alias}`);
+    navigate(
+      `${presenterRef.current!.getBaseUrl(location)}/${currentUser!.alias}`,
+    );
   };
 
   const followDisplayedUser = async (
