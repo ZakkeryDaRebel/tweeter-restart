@@ -6,20 +6,19 @@ import {
   Presenter,
   UpdateUserView,
 } from "./Presenter";
+import { UserServicePresenter } from "./ServicePresenter";
 
 export interface AuthenticationView
   extends LoadingView, NavigateView, UpdateUserView {}
 
 export abstract class AuthenticationPresenter<
   T extends AuthenticationView,
-> extends Presenter<T> {
+> extends UserServicePresenter<T> {
   private _rememberMe: boolean;
-  private _service: UserService;
 
   public constructor(view: T) {
     super(view);
     this._rememberMe = false;
-    this._service = new UserService();
   }
 
   public get rememberMe() {
@@ -28,10 +27,6 @@ export abstract class AuthenticationPresenter<
 
   public set rememberMe(value: boolean) {
     this._rememberMe = value;
-  }
-
-  public get service() {
-    return this._service;
   }
 
   public async doAuthentication(
