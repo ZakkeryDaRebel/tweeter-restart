@@ -1,12 +1,15 @@
 import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
-import { AuthenticationView, Presenter } from "./Presenter";
+import {
+  AuthenticationPresenter,
+  AuthenticationView,
+} from "./AuthenticationPresenter";
 
 export interface RegisterView extends AuthenticationView {
   setImageUrl: (url: string) => void;
 }
 
-export class RegisterPresenter extends Presenter<RegisterView> {
+export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
   private service: UserService;
   private _rememberMe: boolean;
   private imageBytes: Uint8Array;
