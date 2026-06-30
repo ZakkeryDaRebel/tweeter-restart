@@ -21,7 +21,7 @@ export class LoginPresenter extends AuthenticationPresenter<AuthenticationView> 
     firstName?: string,
     lastName?: string,
   ): Promise<[User, AuthToken]> {
-    return await this.service.login(alias, password);
+    return await this.userService.login(alias, password);
   }
 
   protected authenticationDescription(): string {
