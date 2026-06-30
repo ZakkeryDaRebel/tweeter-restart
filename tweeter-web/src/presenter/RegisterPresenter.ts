@@ -61,7 +61,7 @@ export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
     firstName?: string,
     lastName?: string,
   ): Promise<[User, AuthToken]> {
-    return await this.service.register(
+    return await this.userService.register(
       firstName!,
       lastName!,
       alias,
