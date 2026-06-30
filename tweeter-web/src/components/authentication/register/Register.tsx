@@ -52,7 +52,12 @@ const Register = () => {
   };
 
   const doRegister = async () => {
-    presenterRef.current!.register(firstName, lastName, alias, password);
+    presenterRef.current!.doAuthentication(
+      alias,
+      password,
+      firstName,
+      lastName,
+    );
   };
 
   const inputFieldFactory = () => {
