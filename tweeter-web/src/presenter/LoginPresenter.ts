@@ -18,8 +18,8 @@ export class LoginPresenter extends AuthenticationPresenter<AuthenticationView> 
   protected async authenticationOperation(
     alias: string,
     password: string,
-    firstName: string | undefined,
-    lastName: string | undefined,
+    firstName?: string,
+    lastName?: string,
   ): Promise<[User, AuthToken]> {
     return await this.service.login(alias, password);
   }

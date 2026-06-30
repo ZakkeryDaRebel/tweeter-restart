@@ -58,8 +58,8 @@ export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
   protected async authenticationOperation(
     alias: string,
     password: string,
-    firstName: string | undefined,
-    lastName: string | undefined,
+    firstName?: string,
+    lastName?: string,
   ): Promise<[User, AuthToken]> {
     return await this.service.register(
       firstName!,

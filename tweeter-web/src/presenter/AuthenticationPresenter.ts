@@ -54,8 +54,8 @@ export abstract class AuthenticationPresenter<
   protected abstract authenticationOperation(
     alias: string,
     password: string,
-    firstName: string | undefined,
-    lastName: string | undefined,
+    firstName?: string,
+    lastName?: string,
   ): Promise<[User, AuthToken]>;
 
   protected abstract authenticationDescription(): string;
