@@ -1,6 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
 import { NavigateView } from "./Presenter";
-import { UserServicePresenter } from "./ServicePresenter";
+import { UserServicePresenter } from "./UserServicePresenter";
 
 export interface UserNavigationView extends NavigateView {
   setDisplayedUser: (user: User) => void;
@@ -16,7 +16,7 @@ export class UserNavigationPresenter extends UserServicePresenter<UserNavigation
       const alias = this.extractAlias(eventString);
       const featurePath = this.extractPath(eventString);
 
-      const toUser = await this.service.getUser(authToken, alias);
+      const toUser = await this.userService.getUser(authToken, alias);
 
       if (toUser) {
         if (!toUser.equals(displayedUser!)) {
