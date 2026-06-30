@@ -1,41 +1,36 @@
-import { UserService } from "../model.service/UserService";
+import { User, AuthToken } from "tweeter-shared";
 import {
   AuthenticationPresenter,
   AuthenticationView,
 } from "./AuthenticationPresenter";
 
 export class LoginPresenter extends AuthenticationPresenter<AuthenticationView> {
-  private service: UserService;
+  private originalUrl: string | undefined;
 
-  public constructor(view: AuthenticationView) {
-    super(view);
-    this.service = new UserService();
-  }
-
-  public async doLogin(
-    alias: string,
-    password: string,
-    rememberMe: boolean,
+  public constructor(
+    view: AuthenticationView,
     originalUrl: string | undefined,
   ) {
-    this.doFailureAndFinallyReportingOperation(
-      async () => {
-        this.view.setIsLoading(true);
+    super(view);
+    this.originalUrl = originalUrl;
+  }
 
-        const [user, authToken] = await this.service.login(alias, password);
+  protected async authenticationOperation(
+    alias: string,
+    password: string,
+    firstName: string | undefined,
+    lastName: string | undefined,
+  ): Promise<[User, AuthToken]> {
+    return await this.service.login(alias, password);
+  }
 
-        this.view.updateUserInfo(user, user, authToken, rememberMe);
+  protected authenticationDescription(): string {
+    return "log user in";
+  }
 
-        if (!!originalUrl) {
-          this.view.navigate(originalUrl);
-        } else {
-          this.view.navigate(`/feed/${user.alias}`);
-        }
-      },
-      "log user in",
-      () => {
-        this.view.setIsLoading(false);
-      },
-    );
+  protected getDestinationUrl(user: User): string {
+    return !!this.originalUrl
+      ? this.originalUrl
+      : this.defaultDestinationUrl(user);
   }
 }
