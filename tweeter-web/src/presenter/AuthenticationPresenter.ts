@@ -1,11 +1,5 @@
 import { AuthToken, User } from "tweeter-shared";
-import { UserService } from "../model.service/UserService";
-import {
-  LoadingView,
-  NavigateView,
-  Presenter,
-  UpdateUserView,
-} from "./Presenter";
+import { LoadingView, NavigateView, UpdateUserView } from "./Presenter";
 import { UserServicePresenter } from "./ServicePresenter";
 
 export interface AuthenticationView
