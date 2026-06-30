@@ -1,6 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
 import { LoadingView, NavigateView, UpdateUserView } from "./Presenter";
-import { UserServicePresenter } from "./ServicePresenter";
+import { UserServicePresenter } from "./UserServicePresenter";
 
 export interface AuthenticationView
   extends LoadingView, NavigateView, UpdateUserView {}
