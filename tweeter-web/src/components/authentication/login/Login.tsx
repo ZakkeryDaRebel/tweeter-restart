@@ -6,7 +6,8 @@ import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import AuthenticationFields from "../AuthenticationFields";
 import { useMessageActions } from "../../toaster/MessageHooks";
 import { useUserInfoActions } from "../../userInfo/UserInfoHooks";
-import { LoginPresenter, LoginView } from "../../../presenter/LoginPresenter";
+import { LoginPresenter } from "../../../presenter/LoginPresenter";
+import { AuthenticationView } from "../../../presenter/AuthenticationPresenter";
 
 interface Props {
   originalUrl?: string;
@@ -15,14 +16,13 @@ interface Props {
 const Login = (props: Props) => {
   const [alias, setAlias] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { updateUserInfo } = useUserInfoActions();
   const { displayErrorMessage } = useMessageActions();
 
-  const listener: LoginView = {
+  const listener: AuthenticationView = {
     setIsLoading: setIsLoading,
     displayErrorMessage: displayErrorMessage,
     updateUserInfo: updateUserInfo,
@@ -31,7 +31,7 @@ const Login = (props: Props) => {
 
   const presenterRef = useRef<LoginPresenter | null>(null);
   if (!presenterRef.current) {
-    presenterRef.current = new LoginPresenter(listener);
+    presenterRef.current = new LoginPresenter(listener, props.originalUrl);
   }
 
   const checkSubmitButtonStatus = (): boolean => {
@@ -45,12 +45,7 @@ const Login = (props: Props) => {
   };
 
   const doLogin = () => {
-    presenterRef.current!.doLogin(
-      alias,
-      password,
-      rememberMe,
-      props.originalUrl,
-    );
+    presenterRef.current!.doAuthentication(alias, password);
   };
 
   const inputFieldFactory = () => {
@@ -81,7 +76,9 @@ const Login = (props: Props) => {
       oAuthHeading="Sign in with:"
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
-      setRememberMe={setRememberMe}
+      setRememberMe={(value: boolean) => {
+        presenterRef.current!.rememberMe = value;
+      }}
       submitButtonDisabled={checkSubmitButtonStatus}
       isLoading={isLoading}
       submit={doLogin}
