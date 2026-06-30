@@ -1,19 +1,12 @@
 import { AuthToken, User } from "tweeter-shared";
-import { UserService } from "../model.service/UserService";
-import { NavigateView, Presenter } from "./Presenter";
+import { NavigateView } from "./Presenter";
+import { UserServicePresenter } from "./ServicePresenter";
 
 export interface UserNavigationView extends NavigateView {
   setDisplayedUser: (user: User) => void;
 }
 
-export class UserNavigationPresenter extends Presenter<UserNavigationView> {
-  private service: UserService;
-
-  public constructor(view: UserNavigationView) {
-    super(view);
-    this.service = new UserService();
-  }
-
+export class UserNavigationPresenter extends UserServicePresenter<UserNavigationView> {
   public async navigateToUser(
     eventString: string,
     authToken: AuthToken,
