@@ -1,55 +1,22 @@
-import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
 import {
   AuthenticationPresenter,
   AuthenticationView,
 } from "./AuthenticationPresenter";
+import { User, AuthToken } from "tweeter-shared";
 
 export interface RegisterView extends AuthenticationView {
   setImageUrl: (url: string) => void;
 }
 
 export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
-  private service: UserService;
-  private _rememberMe: boolean;
   private imageBytes: Uint8Array;
   private imageFileExtension: string;
 
   public constructor(view: RegisterView) {
     super(view);
-    this.service = new UserService();
-    this._rememberMe = false;
     this.imageBytes = new Uint8Array();
     this.imageFileExtension = "";
-  }
-
-  public async register(
-    firstName: string,
-    lastName: string,
-    alias: string,
-    password: string,
-  ) {
-    this.doFailureAndFinallyReportingOperation(
-      async () => {
-        this.view.setIsLoading(true);
-
-        const [user, authToken] = await this.service.register(
-          firstName,
-          lastName,
-          alias,
-          password,
-          this.imageBytes,
-          this.imageFileExtension,
-        );
-
-        this.view.updateUserInfo(user, user, authToken, this._rememberMe);
-        this.view.navigate(`/feed/${user.alias}`);
-      },
-      "register user",
-      () => {
-        this.view.setIsLoading(false);
-      },
-    );
   }
 
   public handleImageFile(file: File | undefined) {
@@ -88,7 +55,27 @@ export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
     return file.name.split(".").pop();
   }
 
-  public set rememberMe(value: boolean) {
-    this._rememberMe = value;
+  protected async authenticationOperation(
+    alias: string,
+    password: string,
+    firstName: string | undefined,
+    lastName: string | undefined,
+  ): Promise<[User, AuthToken]> {
+    return await this.service.register(
+      firstName!,
+      lastName!,
+      alias,
+      password,
+      this.imageBytes,
+      this.imageFileExtension,
+    );
+  }
+
+  protected authenticationDescription(): string {
+    return "register user";
+  }
+
+  protected getDestinationUrl(user: User): string {
+    return this.defaultDestinationUrl(user);
   }
 }
