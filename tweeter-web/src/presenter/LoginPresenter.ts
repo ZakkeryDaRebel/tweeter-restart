@@ -1,12 +1,10 @@
 import { UserService } from "../model.service/UserService";
 import { AuthenticationView, Presenter } from "./Presenter";
 
-export interface LoginView extends AuthenticationView {}
-
-export class LoginPresenter extends Presenter<LoginView> {
+export class LoginPresenter extends Presenter<AuthenticationView> {
   private service: UserService;
 
-  public constructor(view: LoginView) {
+  public constructor(view: AuthenticationView) {
     super(view);
     this.service = new UserService();
   }
