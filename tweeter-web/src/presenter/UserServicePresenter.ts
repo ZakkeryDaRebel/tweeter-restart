@@ -9,7 +9,7 @@ export class UserServicePresenter<T extends View> extends Presenter<T> {
     this._userService = new UserService();
   }
 
-  protected get userService() {
+  public get userService() {
     return this._userService;
   }
 }
