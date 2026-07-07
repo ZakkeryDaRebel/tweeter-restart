@@ -9,7 +9,7 @@ export interface LogoutView extends MessageView, NavigateView {
 export class LogoutPresenter extends UserServicePresenter<LogoutView> {
   public async logOut(authToken: AuthToken) {
     const loggingOutToastId = this.view.displayInfoMessage("Logging Out...", 0);
-    this.doFailureReportingOperation(async () => {
+    await this.doFailureReportingOperation(async () => {
       await this.userService.logout(authToken!);
 
       this.view.deleteMessage(loggingOutToastId);

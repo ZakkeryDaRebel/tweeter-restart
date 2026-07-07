@@ -29,7 +29,7 @@ export abstract class AuthenticationPresenter<
     firstName?: string,
     lastName?: string,
   ) {
-    this.doFailureAndFinallyReportingOperation(
+    await this.doFailureAndFinallyReportingOperation(
       async () => {
         this.view.setIsLoading(true);
 

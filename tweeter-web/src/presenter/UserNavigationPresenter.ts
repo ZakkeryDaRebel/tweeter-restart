@@ -12,7 +12,7 @@ export class UserNavigationPresenter extends UserServicePresenter<UserNavigation
     authToken: AuthToken,
     displayedUser: User,
   ): Promise<void> {
-    this.doFailureReportingOperation(async () => {
+    await this.doFailureReportingOperation(async () => {
       const alias = this.extractAlias(eventString);
       const featurePath = this.extractPath(eventString);
 
