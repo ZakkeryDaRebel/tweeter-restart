@@ -71,5 +71,31 @@ describe("PostStatusPresenter", () => {
     verify(
       mockPostStatusPresenterView.displayInfoMessage("Status posted!", 2000),
     ).once();
+
+    verify(
+      mockPostStatusPresenterView.displayErrorMessage(
+        "Failed to post the status because of exception: An error occurred",
+      ),
+    ).never();
+  });
+
+  it("tells the view to clear the info message and display an error message but does not tell it to clear the post or display a status posted message when unsuccessful", async () => {
+    when(mockService.postStatus(anything(), anything())).thenThrow(
+      new Error("An error occurred"),
+    );
+
+    await postStatusPresenter.submitPost(user, authToken, post);
+
+    verify(mockPostStatusPresenterView.deleteMessage(messageId)).once();
+    verify(
+      mockPostStatusPresenterView.displayErrorMessage(
+        "Failed to post the status because of exception: An error occurred",
+      ),
+    ).once();
+
+    verify(mockPostStatusPresenterView.setPost("")).never();
+    verify(
+      mockPostStatusPresenterView.displayInfoMessage("Status posted!", 2000),
+    ).never();
   });
 });
