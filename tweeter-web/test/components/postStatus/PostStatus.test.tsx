@@ -8,7 +8,20 @@ import { AuthToken, User } from "tweeter-shared";
 
 const post: string = "Hello world!";
 
+jest.mock("../../../src/components/userInfo/UserInfoHooks", () => ({
+  ...jest.requireActual("../../../src/components/userInfo/UserInfoHooks"),
+  __esModule: true,
+  useUserInfo: jest.fn(),
+}));
+
 describe("PostStatus Component", () => {
+  beforeAll(() => {
+    (useUserInfo as jest.Mock).mockReturnValue({
+      currentUser: new User("firstName", "lastName", "@FakeAlias", "image-url"),
+      authToken: new AuthToken("token", Date.now()),
+    });
+  });
+
   it("starts with the post status and clear buttons disabled", async () => {
     const { postStatusButton, clearButton } = renderPostStatusAndGetElements();
 
