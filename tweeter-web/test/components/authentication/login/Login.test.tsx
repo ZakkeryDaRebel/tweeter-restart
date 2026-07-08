@@ -24,6 +24,12 @@ describe("Login Component", () => {
 
     await user.clear(aliasField);
     expect(signInButton).toBeDisabled();
+
+    await user.type(aliasField, "a");
+    expect(signInButton).toBeEnabled();
+
+    await user.clear(passwordField);
+    expect(signInButton).toBeDisabled();
   });
 });
 
