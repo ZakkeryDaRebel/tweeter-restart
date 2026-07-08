@@ -53,7 +53,7 @@ describe("PostStatus Component", () => {
     expect(clearButton).toBeDisabled();
   });
 
-  it("cann's the presenter's postStatus method with correct parameters when the Post Status button is pressed", async () => {
+  it("calls the presenter's postStatus method with correct parameters when the Post Status button is pressed", async () => {
     const mockPresenter = mock<PostStatusPresenter>();
     const mockPresenterInstance = instance(mockPresenter);
 
