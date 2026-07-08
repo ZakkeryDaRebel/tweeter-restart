@@ -49,8 +49,8 @@ const PostStatus = () => {
         <textarea
           className="form-control"
           id="postStatusTextArea"
+          aria-label="text"
           rows={10}
-          aria-label="text-field"
           placeholder="What's on your mind?"
           value={post}
           onChange={(event) => {
