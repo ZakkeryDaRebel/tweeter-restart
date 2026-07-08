@@ -30,13 +30,18 @@ describe("PostStatus Component", () => {
   });
 
   it("enables both buttons when the text field has text", async () => {
+    await createPost();
+  });
+
+  it("enables both buttons to be disabled when text is cleared", async () => {
     const { postStatusButton, clearButton, user, textField } =
-      renderPostStatusAndGetElements();
+      await createPost();
 
-    await user.type(textField, post);
+    await user.click(clearButton);
 
-    expect(postStatusButton).toBeEnabled();
-    expect(clearButton).toBeEnabled();
+    expect(textField).toBeEmptyDOMElement;
+    expect(postStatusButton).toBeDisabled();
+    expect(clearButton).toBeDisabled();
   });
 });
 
@@ -58,4 +63,16 @@ function renderPostStatusAndGetElements() {
   const clearButton = screen.getByRole("button", { name: /Clear/ });
 
   return { user, textField, postStatusButton, clearButton };
+}
+
+async function createPost() {
+  const { postStatusButton, clearButton, user, textField } =
+    renderPostStatusAndGetElements();
+
+  await user.type(textField, post);
+
+  expect(postStatusButton).toBeEnabled();
+  expect(clearButton).toBeEnabled();
+
+  return { postStatusButton, clearButton, user, textField };
 }
