@@ -19,7 +19,11 @@ describe("Login Component", () => {
   });
 
   it("disables the sign in button if either the alias or the password field is cleared", async () => {
-    await enableButton("/");
+    const { signInButton, aliasField, passwordField, user } =
+      await enableButton("/");
+
+    await user.clear(aliasField);
+    expect(signInButton).toBeDisabled();
   });
 });
 
@@ -51,4 +55,6 @@ async function enableButton(originalUrl: string) {
   await user.type(passwordField, "b");
 
   expect(signInButton).toBeEnabled();
+
+  return { signInButton, aliasField, passwordField, user };
 }
