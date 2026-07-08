@@ -5,8 +5,17 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { useUserInfo } from "../../../src/components/userInfo/UserInfoHooks";
 import { AuthToken, User } from "tweeter-shared";
+import { instance, mock, verify } from "@typestrong/ts-mockito";
+import { PostStatusPresenter } from "../../../src/presenter/PostStatusPresenter";
 
 const post: string = "Hello world!";
+const currentUser: User = new User(
+  "firstName",
+  "lastName",
+  "@FakeAlias",
+  "image-url",
+);
+const authToken: AuthToken = new AuthToken("token", Date.now());
 
 jest.mock("../../../src/components/userInfo/UserInfoHooks", () => ({
   ...jest.requireActual("../../../src/components/userInfo/UserInfoHooks"),
@@ -17,8 +26,8 @@ jest.mock("../../../src/components/userInfo/UserInfoHooks", () => ({
 describe("PostStatus Component", () => {
   beforeAll(() => {
     (useUserInfo as jest.Mock).mockReturnValue({
-      currentUser: new User("firstName", "lastName", "@FakeAlias", "image-url"),
-      authToken: new AuthToken("token", Date.now()),
+      currentUser: currentUser,
+      authToken: authToken,
     });
   });
 
@@ -43,20 +52,31 @@ describe("PostStatus Component", () => {
     expect(postStatusButton).toBeDisabled();
     expect(clearButton).toBeDisabled();
   });
+
+  it("cann's the presenter's postStatus method with correct parameters when the Post Status button is pressed", async () => {
+    const mockPresenter = mock<PostStatusPresenter>();
+    const mockPresenterInstance = instance(mockPresenter);
+
+    const { postStatusButton, user } = await createPost(mockPresenterInstance);
+
+    await user.click(postStatusButton);
+
+    verify(mockPresenter.submitPost(currentUser, authToken, post)).once();
+  });
 });
 
-function renderPostStatus() {
+function renderPostStatus(presenter?: PostStatusPresenter) {
   return render(
     <MemoryRouter>
-      <PostStatus />
+      {!!presenter ? <PostStatus presenter={presenter} /> : <PostStatus />}
     </MemoryRouter>,
   );
 }
 
-function renderPostStatusAndGetElements() {
+function renderPostStatusAndGetElements(presenter?: PostStatusPresenter) {
   const user = userEvent.setup();
 
-  renderPostStatus();
+  renderPostStatus(presenter);
 
   const textField = screen.getByLabelText("text");
   const postStatusButton = screen.getByRole("button", { name: /Post Status/ });
@@ -65,9 +85,9 @@ function renderPostStatusAndGetElements() {
   return { user, textField, postStatusButton, clearButton };
 }
 
-async function createPost() {
+async function createPost(presenter?: PostStatusPresenter) {
   const { postStatusButton, clearButton, user, textField } =
-    renderPostStatusAndGetElements();
+    renderPostStatusAndGetElements(presenter);
 
   await user.type(textField, post);
 

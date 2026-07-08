@@ -7,7 +7,11 @@ import {
   PostStatusView,
 } from "../../presenter/PostStatusPresenter";
 
-const PostStatus = () => {
+interface Props {
+  presenter?: PostStatusPresenter;
+}
+
+const PostStatus = (props: Props) => {
   const { displayInfoMessage, displayErrorMessage, deleteMessage } =
     useMessageActions();
 
@@ -25,7 +29,7 @@ const PostStatus = () => {
 
   const presenterRef = useRef<PostStatusPresenter | null>(null);
   if (!presenterRef.current) {
-    presenterRef.current = new PostStatusPresenter(listener);
+    presenterRef.current = props.presenter ?? new PostStatusPresenter(listener);
   }
 
   const clearPost = (event: React.MouseEvent) => {
