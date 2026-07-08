@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import PostStatus from "../../../src/components/postStatus/PostStatus";
 import userEvent from "@testing-library/user-event";
@@ -19,4 +19,10 @@ function renderPostStatusAndGetElements() {
   const user = userEvent.setup();
 
   renderPostStatus();
+
+  const textField = screen.getByLabelText("text-field");
+  const postStatusButton = screen.getByRole("button", { name: /Post Status/ });
+  const clearButton = screen.getByRole("button", { name: /Clear/ });
+
+  return { user, textField, postStatusButton, clearButton };
 }
