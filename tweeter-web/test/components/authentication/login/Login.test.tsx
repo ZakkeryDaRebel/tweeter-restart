@@ -15,13 +15,11 @@ describe("Login Component", () => {
   });
 
   it("enables the sign in button if both alias and password fields have text", async () => {
-    const { signInButton, aliasField, passwordField, user } =
-      renderLoginAndGetElements("/");
+    await enableButton("/");
+  });
 
-    await user.type(aliasField, "a");
-    await user.type(passwordField, "b");
-
-    expect(signInButton).toBeEnabled();
+  it("disables the sign in button if either the alias or the password field is cleared", async () => {
+    await enableButton("/");
   });
 });
 
@@ -43,4 +41,14 @@ function renderLoginAndGetElements(originalUrl: string) {
   const passwordField = screen.getByLabelText("password");
 
   return { user, signInButton, aliasField, passwordField };
+}
+
+async function enableButton(originalUrl: string) {
+  const { signInButton, aliasField, passwordField, user } =
+    renderLoginAndGetElements(originalUrl);
+
+  await user.type(aliasField, "a");
+  await user.type(passwordField, "b");
+
+  expect(signInButton).toBeEnabled();
 }
