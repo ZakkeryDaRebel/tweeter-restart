@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import PostStatus from "../../../src/components/postStatus/PostStatus";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
 
 describe("PostStatus Component", () => {
   it("starts with the post status and clear buttons disabled", async () => {
