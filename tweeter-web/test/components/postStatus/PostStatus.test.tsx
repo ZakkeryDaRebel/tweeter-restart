@@ -4,7 +4,12 @@ import PostStatus from "../../../src/components/postStatus/PostStatus";
 import userEvent from "@testing-library/user-event";
 
 describe("PostStatus Component", () => {
-  it("starts with the post status and clear buttons disabled", async () => {});
+  it("starts with the post status and clear buttons disabled", async () => {
+    const { postStatusButton, clearButton } = renderPostStatusAndGetElements();
+
+    expect(postStatusButton).toBeDisabled();
+    expect(clearButton).toBeDisabled();
+  });
 });
 
 function renderPostStatus() {
