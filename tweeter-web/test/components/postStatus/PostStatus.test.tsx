@@ -51,6 +51,13 @@ describe("PostStatus Component", () => {
     expect(textField).toBeEmptyDOMElement;
     expect(postStatusButton).toBeDisabled();
     expect(clearButton).toBeDisabled();
+
+    await user.type(textField, "a");
+    await user.clear(textField);
+
+    expect(textField).toBeEmptyDOMElement;
+    expect(postStatusButton).toBeDisabled();
+    expect(clearButton).toBeDisabled();
   });
 
   it("calls the presenter's postStatus method with correct parameters when the Post Status button is pressed", async () => {
