@@ -88,26 +88,11 @@ export class FollowService implements Service {
   ): Promise<[UserDto[], boolean]> {
     // TODO: Replace with the result of calling server
     const [items, hasMore] = FakeData.instance.getPageOfUsers(
-      this.getDomainObject(lastItem),
+      User.fromDto(lastItem),
       pageSize,
       userAlias,
     );
-    const dtos = items.map((user) => this.createDto(user));
+    const dtos = items.map((user) => user.getDto());
     return [dtos, hasMore];
-  }
-
-  private createDto(user: User): UserDto {
-    return {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      alias: user.alias,
-      imageUrl: user.imageUrl,
-    };
-  }
-
-  private getDomainObject(dto: UserDto | null): User | null {
-    return dto == null
-      ? null
-      : new User(dto.firstName, dto.lastName, dto.alias, dto.imageUrl);
   }
 }
