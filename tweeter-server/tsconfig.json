@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "esnext",
+    "rootDir": "./src",
+    "module": "nodenext",
     "target": "es2022",
-    "types": [],
-    "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
+    "moduleResolution": "nodenext"
   }
 }
