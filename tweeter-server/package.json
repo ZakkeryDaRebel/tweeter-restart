@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npm run compile",
     "compile": "npm run clean && tsc",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "copy-shared": "rm -rf node_modules/tweeter-shared && cp -R ../tweeter-shared node_modules/tweeter-shared && rm -rf layer/nodejs/node_modules/tweeter-shared && cp -R ../tweeter-shared layer/nodejs/node_modules/tweeter-shared"
   },
   "keywords": [],
   "author": "",
