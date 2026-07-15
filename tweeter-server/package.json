@@ -16,5 +16,9 @@
     "tweeter-shared": "file:../tweeter-shared",
     "date-fns": "^3.3.1",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.2"
   }
 }
