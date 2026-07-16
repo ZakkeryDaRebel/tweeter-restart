@@ -1,7 +1,7 @@
 import { PagedUserItemRequest, PagedUserItemResponse } from "tweeter-shared";
 import { handler as parentHandler } from "./GetUserItemLambda";
 
-export const handler = (
+export const handler = async (
   request: PagedUserItemRequest,
 ): Promise<PagedUserItemResponse> =>
   parentHandler(request, (service, ...args) =>
