@@ -23,6 +23,7 @@ export type { TweeterRequest } from "./model/net/request/TweeterReqest";
 export type { PagedItemRequest } from "./model/net/request/PagedItemRequest";
 export type { PagedUserItemRequest } from "./model/net/request/PagedUserItemRequest";
 export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItemRequest";
+export type { IsFollowerRequest } from "./model/net/request/IsFollowerRequest";
 
 //
 // Responses
