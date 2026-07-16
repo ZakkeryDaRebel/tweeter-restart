@@ -2,22 +2,11 @@ import {
   PagedStatusItemRequest,
   PagedStatusItemResponse,
 } from "tweeter-shared";
-import { StatusService } from "../../model/service/StatusService";
+import { handler as parentHandler } from "./GetStatusItemLambda";
 
 export const handler = async (
   request: PagedStatusItemRequest,
-): Promise<PagedStatusItemResponse> => {
-  const statusService: StatusService = new StatusService();
-  const [items, hasMore] = await statusService.loadMoreStoryItems(
-    request.token,
-    request.userAlias,
-    request.pageSize,
-    request.lastItem,
+): Promise<PagedStatusItemResponse> =>
+  await parentHandler(request, (service, ...args) =>
+    service.loadMoreStoryItems(...args),
   );
-  return {
-    success: true,
-    message: null,
-    items: items,
-    hasMore: hasMore,
-  };
-};
