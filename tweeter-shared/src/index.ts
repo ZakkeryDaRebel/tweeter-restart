@@ -32,6 +32,7 @@ export type { TweeterResponse } from "./model/net/response/TweeterResponse";
 export type { PagedItemResponse } from "./model/net/response/PagedItemResponse";
 export type { PagedUserItemResponse } from "./model/net/response/PagedUserItemResponse";
 export type { PagedStatusItemResponse } from "./model/net/response/PagedStatusItemResponse";
+export type { IsFollowerResponse } from "./model/net/response/IsFollowerResponse";
 
 //
 // Other
