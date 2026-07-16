@@ -1,11 +1,10 @@
 import {
   PagedStatusItemRequest,
   PagedStatusItemResponse,
-  Status,
   StatusDto,
 } from "tweeter-shared";
-import { StatusService } from "../../model/service/StatusService";
-import { handler as parentHandler } from "../GetItemLambda";
+import { StatusService } from "../../../model/service/StatusService";
+import { handler as parentHandler } from "../../GetItemLambda";
 
 export const handler = async (
   request: PagedStatusItemRequest,
