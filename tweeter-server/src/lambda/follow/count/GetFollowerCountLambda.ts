@@ -1,17 +1,9 @@
 import { GetFollowCountRequest, GetFollowCountResponse } from "tweeter-shared";
-import { FollowService } from "../../../model/service/FollowService";
+import { handler as parentHandler } from "./GetCountLambda";
 
 export const handler = async (
   request: GetFollowCountRequest,
-): Promise<GetFollowCountResponse> => {
-  const followService = new FollowService();
-  const count = await followService.getFollowerCount(
-    request.token,
-    request.user,
+): Promise<GetFollowCountResponse> =>
+  await parentHandler(request, (followService, ...args) =>
+    followService.getFollowerCount(...args),
   );
-  return {
-    success: true,
-    message: null,
-    count: count,
-  };
-};
