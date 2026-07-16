@@ -3,8 +3,8 @@ import {
   PagedUserItemResponse,
   UserDto,
 } from "tweeter-shared";
-import { FollowService } from "../../model/service/FollowService";
-import { handler as parentHandler } from "../GetItemLambda";
+import { FollowService } from "../../../model/service/FollowService";
+import { handler as parentHandler } from "../../GetItemLambda";
 
 export const handler = async (
   request: PagedUserItemRequest,
