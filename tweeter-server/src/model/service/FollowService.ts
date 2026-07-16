@@ -1,4 +1,4 @@
-import { AuthToken, User, FakeData, UserDto } from "tweeter-shared";
+import { User, FakeData, UserDto } from "tweeter-shared";
 import { Service } from "./Service";
 
 export class FollowService implements Service {
@@ -40,43 +40,30 @@ export class FollowService implements Service {
   }
 
   public async follow(
-    authToken: AuthToken,
-    userToFollow: User,
+    token: string,
+    userToFollow: UserDto,
   ): Promise<[followerCount: number, followeeCount: number]> {
     // Pause so we can see the follow message. Remove when connected to the server
     await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server
-
-    const followerCount = await this.getFollowerCount(
-      authToken.token,
-      userToFollow,
-    );
-    const followeeCount = await this.getFolloweeCount(
-      authToken.token,
-      userToFollow,
-    );
-
-    return [followerCount, followeeCount];
+    return await this.reloadCount(token, userToFollow);
   }
 
   public async unfollow(
-    authToken: AuthToken,
-    userToUnfollow: User,
+    token: string,
+    userToUnfollow: UserDto,
   ): Promise<[followerCount: number, followeeCount: number]> {
     // Pause so we can see the unfollow message. Remove when connected to the server
     await new Promise((f) => setTimeout(f, 2000));
-
     // TODO: Call the server
+    return await this.reloadCount(token, userToUnfollow);
+  }
 
-    const followerCount = await this.getFollowerCount(
-      authToken.token,
-      userToUnfollow,
-    );
-    const followeeCount = await this.getFolloweeCount(
-      authToken.token,
-      userToUnfollow,
-    );
+  private async reloadCount(
+    token: string,
+    userToCount: UserDto,
+  ): Promise<[followerCount: number, followeeCount: number]> {
+    const followerCount = await this.getFollowerCount(token, userToCount);
+    const followeeCount = await this.getFolloweeCount(token, userToCount);
 
     return [followerCount, followeeCount];
   }
