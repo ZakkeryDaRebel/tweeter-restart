@@ -4,6 +4,6 @@ import { handler as parentHandler } from "./GetUserItemLambda";
 export const handler = async (
   request: PagedUserItemRequest,
 ): Promise<PagedUserItemResponse> =>
-  parentHandler(request, (service, ...args) =>
+  await parentHandler(request, (service, ...args) =>
     service.loadMoreFollowees(...args),
   );
