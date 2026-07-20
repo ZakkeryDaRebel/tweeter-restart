@@ -18,14 +18,7 @@ export class UserService implements Service {
     alias: string,
     password: string,
   ): Promise<[UserDto, AuthToken]> {
-    // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
-
-    if (user === null) {
-      throw new Error("Invalid alias or password");
-    }
-
-    return [user.getDto(), FakeData.instance.authToken];
+    return await this.fakeDataSignIn();
   }
 
   public async register(
@@ -36,6 +29,10 @@ export class UserService implements Service {
     imageStringBase64: string,
     imageFileExtension: string,
   ): Promise<[UserDto, AuthToken]> {
+    return await this.fakeDataSignIn();
+  }
+
+  private async fakeDataSignIn(): Promise<[UserDto, AuthToken]> {
     // TODO: Replace with the result of calling the server
     const user = FakeData.instance.firstUser;
 
