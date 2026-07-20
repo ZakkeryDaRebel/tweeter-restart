@@ -29,6 +29,7 @@ export type { GetFollowCountRequest } from "./model/net/request/GetFollowCountRe
 export type { FollowCommandRequest } from "./model/net/request/FollowCommandRequest";
 export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
 export type { GetUserRequest } from "./model/net/request/GetUserRequest";
+export type { LoginRequest } from "./model/net/request/LoginRequest";
 
 //
 // Responses
