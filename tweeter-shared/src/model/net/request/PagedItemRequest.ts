@@ -1,7 +1,6 @@
-import { TweeterRequest } from "./TweeterReqest";
+import { AuthenticatedRequest } from "./AuthenticatedRequest";
 
-export interface PagedItemRequest<T> extends TweeterRequest {
-  readonly token: string;
+export interface PagedItemRequest<T> extends AuthenticatedRequest {
   readonly userAlias: string;
   readonly pageSize: number;
   readonly lastItem: T | null;
