@@ -290,6 +290,34 @@ Resources:
             Path: /follow/isFollower
             Method: POST
 
+  getFeedFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getFeedFunction
+      Handler: lambda/story/item/GetFeedLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /story/item/feed
+            Method: POST
+
+  getStoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getStoryFunction
+      Handler: lambda/story/item/GetStoryLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /story/item/story
+            Method: POST
+
   #
   # SQS Queue Lambda Functions  (This will become relevant in Milestone 4. For M3, leave this section commented out.)
   #
