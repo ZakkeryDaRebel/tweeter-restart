@@ -42,6 +42,7 @@ export type { IsFollowerResponse } from "./model/net/response/IsFollowerResponse
 export type { GetFollowCountResponse } from "./model/net/response/GetFollowCountResponse";
 export type { FollowCommandResponse } from "./model/net/response/FollowCommandResponse";
 export type { GetUserResponse } from "./model/net/response/GetUserResponse";
+export type { SignInResponse } from "./model/net/response/SignInResponse";
 
 //
 // Other
