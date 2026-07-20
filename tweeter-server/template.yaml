@@ -332,6 +332,34 @@ Resources:
             Path: /story/post
             Method: POST
 
+  loginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: loginFunction
+      Handler: lambda/user/authentication/LoginLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /user/authentication/login
+            Method: POST
+
+  registerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: registerFunction
+      Handler: lambda/user/authentication/RegisterLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /user/authentication/register
+            Method: POST
+
   #
   # SQS Queue Lambda Functions  (This will become relevant in Milestone 4. For M3, leave this section commented out.)
   #
