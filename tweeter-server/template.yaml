@@ -276,6 +276,20 @@ Resources:
             Path: /follow/item/followers
             Method: POST
 
+  getIsFollowerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getIsFollowerFunction
+      Handler: lambda/follow/GetIsFollowerLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /follow/isFollower
+            Method: POST
+
   #
   # SQS Queue Lambda Functions  (This will become relevant in Milestone 4. For M3, leave this section commented out.)
   #
