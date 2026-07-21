@@ -1,6 +1,5 @@
-import { UserDto } from "../../dto/UserDto";
 import { AuthenticatedRequest } from "./AuthenticatedRequest";
 
 export interface GetFollowCountRequest extends AuthenticatedRequest {
-  user: UserDto;
+  userAlias: string;
 }
