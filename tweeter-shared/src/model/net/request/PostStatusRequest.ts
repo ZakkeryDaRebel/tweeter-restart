@@ -1,6 +1,6 @@
-import { StatusDto } from "../../dto/StatusDto";
 import { AuthenticatedRequest } from "./AuthenticatedRequest";
 
 export interface PostStatusRequest extends AuthenticatedRequest {
-  newStatus: StatusDto;
+  post: string;
+  posterAlias: string;
 }
