@@ -5,7 +5,11 @@ export const handler = async (
   request: PostStatusRequest,
 ): Promise<TweeterResponse> => {
   const statusService = new StatusService();
-  await statusService.postStatus(request.token, request.newStatus);
+  await statusService.postStatus(
+    request.token,
+    request.userAlias,
+    request.post,
+  );
   return {
     success: true,
     message: null,
