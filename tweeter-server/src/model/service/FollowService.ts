@@ -56,12 +56,12 @@ export class FollowService implements Service {
 
   public async unfollow(
     token: string,
-    userToUnfollow: UserDto,
+    userAliasToUnfollow: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
     // Pause so we can see the unfollow message. Remove when connected to the server
     await new Promise((f) => setTimeout(f, 2000));
     // TODO: Call the server
-    return await this.reloadCount(token, userToUnfollow.alias);
+    return await this.reloadCount(token, userAliasToUnfollow);
   }
 
   private async reloadCount(
