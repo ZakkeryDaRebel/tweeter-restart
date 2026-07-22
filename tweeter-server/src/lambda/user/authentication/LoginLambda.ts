@@ -5,6 +5,6 @@ export const handler = async (
   request: LoginRequest,
 ): Promise<SignInResponse> => {
   return await parentHandler(
-    async (service) => await service.login(request.alias, request.password),
+    async (service) => await service.login(request.userAlias, request.password),
   );
 };
