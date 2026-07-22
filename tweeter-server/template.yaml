@@ -219,7 +219,7 @@ Resources:
                 responses: *commonAmazonResponses
               responses: *commonSwaggerResponses
 
-          /story/item/feed:
+          /status/item/feed:
             post:
               consumes: *commonConsumes
               produces: *commonProduces
@@ -232,7 +232,7 @@ Resources:
                 responses: *commonAmazonResponses
               responses: *commonSwaggerResponses
 
-          /story/item/story:
+          /status/item/story:
             post:
               consumes: *commonConsumes
               produces: *commonProduces
@@ -245,7 +245,7 @@ Resources:
                 responses: *commonAmazonResponses
               responses: *commonSwaggerResponses
 
-          /story/post:
+          /status/post:
             post:
               consumes: *commonConsumes
               produces: *commonProduces
@@ -472,42 +472,42 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: getFeedFunction
-      Handler: lambda/story/item/GetFeedLambda.handler
+      Handler: lambda/status/item/GetFeedLambda.handler
       Policies: *commonPolicies
       Events:
         PostApi:
           Type: Api
           Properties:
             RestApiId: !Ref tweeterApi
-            Path: /story/item/feed
+            Path: /status/item/feed
             Method: POST
 
   getStoryFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: getStoryFunction
-      Handler: lambda/story/item/GetStoryLambda.handler
+      Handler: lambda/status/item/GetStoryLambda.handler
       Policies: *commonPolicies
       Events:
         PostApi:
           Type: Api
           Properties:
             RestApiId: !Ref tweeterApi
-            Path: /story/item/story
+            Path: /status/item/story
             Method: POST
 
   postStatusFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: postStatusFunction
-      Handler: lambda/story/PostStatusLambda.handler
+      Handler: lambda/status/PostStatusLambda.handler
       Policies: *commonPolicies
       Events:
         PostApi:
           Type: Api
           Properties:
             RestApiId: !Ref tweeterApi
-            Path: /story/post
+            Path: /status/post
             Method: POST
 
   loginFunction:
