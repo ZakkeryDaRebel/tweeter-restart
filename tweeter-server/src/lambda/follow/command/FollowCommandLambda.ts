@@ -1,23 +1,23 @@
 import {
-  FollowCommandRequest,
   FollowCommandResponse,
+  TokenedAliasRequest,
   UserDto,
 } from "tweeter-shared";
 import { FollowService } from "../../../model/service/FollowService";
 
 export const handler = async (
-  request: FollowCommandRequest,
+  request: TokenedAliasRequest,
   serviceOperation: (
     followService: FollowService,
     token: string,
-    userToInteract: UserDto,
+    userAliasToInteract: string,
   ) => Promise<[number, number]>,
 ): Promise<FollowCommandResponse> => {
   const followService = new FollowService();
   const [followerCount, followeeCount] = await serviceOperation(
     followService,
     request.token,
-    request.userToInteract,
+    request.userAlias,
   );
   return {
     success: true,
