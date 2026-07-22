@@ -1,8 +1,8 @@
-import { GetFollowCountRequest, GetFollowCountResponse } from "tweeter-shared";
+import { GetFollowCountResponse, TokenedAliasRequest } from "tweeter-shared";
 import { handler as parentHandler } from "./GetCountLambda";
 
 export const handler = async (
-  request: GetFollowCountRequest,
+  request: TokenedAliasRequest,
 ): Promise<GetFollowCountResponse> =>
   await parentHandler(request, (followService, ...args) =>
     followService.getFolloweeCount(...args),
