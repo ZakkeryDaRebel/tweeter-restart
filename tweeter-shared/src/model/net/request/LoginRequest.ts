@@ -1,6 +1,5 @@
-import { TweeterRequest } from "./TweeterReqest";
+import { AliasRequest } from "./AliasRequest";
 
-export interface LoginRequest extends TweeterRequest {
-  alias: string;
+export interface LoginRequest extends AliasRequest {
   password: string;
 }
