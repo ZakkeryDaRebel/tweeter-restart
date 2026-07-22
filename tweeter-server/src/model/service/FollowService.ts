@@ -29,23 +29,29 @@ export class FollowService implements Service {
     return FakeData.instance.isFollower();
   }
 
-  public async getFolloweeCount(token: string, user: UserDto): Promise<number> {
+  public async getFolloweeCount(
+    token: string,
+    userAlias: string,
+  ): Promise<number> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.getFolloweeCount(user.alias);
+    return FakeData.instance.getFolloweeCount(userAlias);
   }
 
-  public async getFollowerCount(token: string, user: UserDto): Promise<number> {
+  public async getFollowerCount(
+    token: string,
+    userAlias: string,
+  ): Promise<number> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.getFollowerCount(user.alias);
+    return FakeData.instance.getFollowerCount(userAlias);
   }
 
   public async follow(
     token: string,
-    userToFollow: UserDto,
+    userAliasToFollow: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
     // Pause so we can see the follow message. Remove when connected to the server
     await new Promise((f) => setTimeout(f, 2000));
-    return await this.reloadCount(token, userToFollow);
+    return await this.reloadCount(token, userAliasToFollow);
   }
 
   public async unfollow(
@@ -55,15 +61,15 @@ export class FollowService implements Service {
     // Pause so we can see the unfollow message. Remove when connected to the server
     await new Promise((f) => setTimeout(f, 2000));
     // TODO: Call the server
-    return await this.reloadCount(token, userToUnfollow);
+    return await this.reloadCount(token, userToUnfollow.alias);
   }
 
   private async reloadCount(
     token: string,
-    userToCount: UserDto,
+    userAliasToCount: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    const followerCount = await this.getFollowerCount(token, userToCount);
-    const followeeCount = await this.getFolloweeCount(token, userToCount);
+    const followerCount = await this.getFollowerCount(token, userAliasToCount);
+    const followeeCount = await this.getFolloweeCount(token, userAliasToCount);
 
     return [followerCount, followeeCount];
   }
