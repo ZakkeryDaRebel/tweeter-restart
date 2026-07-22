@@ -1,6 +1,5 @@
-import { AuthenticatedRequest } from "./AuthenticatedRequest";
+import { TokenedAliasRequest } from "./TokenedAliasRequest";
 
-export interface IsFollowerRequest extends AuthenticatedRequest {
-  userAlias: string;
+export interface IsFollowerRequest extends TokenedAliasRequest {
   selectedUserAlias: string;
 }
