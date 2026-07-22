@@ -1,7 +1,7 @@
-import { FollowCommandRequest, FollowCommandResponse } from "tweeter-shared";
+import { FollowCommandResponse, TokenedAliasRequest } from "tweeter-shared";
 import { handler as parentHandler } from "./FollowCommandLambda";
 
 export const handler = async (
-  request: FollowCommandRequest,
+  request: TokenedAliasRequest,
 ): Promise<FollowCommandResponse> =>
   await parentHandler(request, (service, ...args) => service.unfollow(...args));
