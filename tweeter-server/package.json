@@ -12,7 +12,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "tweeter-shared": "file:../tweeter-shared",
     "date-fns": "^3.3.1",
