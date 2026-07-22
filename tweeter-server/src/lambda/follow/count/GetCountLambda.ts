@@ -1,23 +1,19 @@
-import {
-  GetFollowCountRequest,
-  GetFollowCountResponse,
-  UserDto,
-} from "tweeter-shared";
+import { GetFollowCountResponse, TokenedAliasRequest } from "tweeter-shared";
 import { FollowService } from "../../../model/service/FollowService";
 
 export const handler = async (
-  request: GetFollowCountRequest,
+  request: TokenedAliasRequest,
   serviceOperation: (
     followService: FollowService,
     token: string,
-    user: UserDto,
+    userAlias: string,
   ) => Promise<number>,
 ): Promise<GetFollowCountResponse> => {
   const followService = new FollowService();
   const count = await serviceOperation(
     followService,
     request.token,
-    request.user,
+    request.userAlias,
   );
   return {
     success: true,
