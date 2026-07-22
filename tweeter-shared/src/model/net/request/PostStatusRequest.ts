@@ -1,6 +1,5 @@
-import { AuthenticatedRequest } from "./AuthenticatedRequest";
+import { TokenedAliasRequest } from "./TokenedAliasRequest";
 
-export interface PostStatusRequest extends AuthenticatedRequest {
+export interface PostStatusRequest extends TokenedAliasRequest {
   post: string;
-  posterAlias: string;
 }
