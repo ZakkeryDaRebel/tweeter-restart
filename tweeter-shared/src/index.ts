@@ -21,14 +21,13 @@ export type { StatusDto } from "./model/dto/StatusDto";
 //
 export type { TweeterRequest } from "./model/net/request/TweeterReqest";
 export type { AuthenticatedRequest } from "./model/net/request/AuthenticatedRequest";
+export type { AliasRequest } from "./model/net/request/AliasRequest";
+export type { TokenedAliasRequest } from "./model/net/request/TokenedAliasRequest";
 export type { PagedItemRequest } from "./model/net/request/PagedItemRequest";
 export type { PagedUserItemRequest } from "./model/net/request/PagedUserItemRequest";
 export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItemRequest";
 export type { IsFollowerRequest } from "./model/net/request/IsFollowerRequest";
-export type { GetFollowCountRequest } from "./model/net/request/GetFollowCountRequest";
-export type { FollowCommandRequest } from "./model/net/request/FollowCommandRequest";
 export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
-export type { GetUserRequest } from "./model/net/request/GetUserRequest";
 export type { LoginRequest } from "./model/net/request/LoginRequest";
 export type { RegisterRequest } from "./model/net/request/RegisterRequest";
 
