@@ -9,7 +9,7 @@ export const handler = async (
       await service.register(
         request.firstName,
         request.lastName,
-        request.alias,
+        request.userAlias,
         request.password,
         request.imageStringBase64,
         request.imageFileExtension,
