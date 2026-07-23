@@ -4,24 +4,24 @@ import {
   FakeData,
   PagedUserItemRequest,
 } from "tweeter-shared";
-import { ServerFacade } from "../network/ServerFacade";
 import { Service } from "./Service";
 
-export class FollowService implements Service {
+export class FollowService extends Service {
   public async loadMoreFollowees(
     authToken: AuthToken,
     userAlias: string,
     pageSize: number,
     lastItem: User | null,
   ): Promise<[User[], boolean]> {
-    const serverFacade = new ServerFacade();
-    const request: PagedUserItemRequest = {
-      token: authToken.token,
-      userAlias: userAlias,
-      pageSize: pageSize,
-      lastItem: lastItem,
-    };
-    return await serverFacade.getMoreFollowees(request);
+    return await this.getMoreUserItems(
+      authToken.token,
+      userAlias,
+      pageSize,
+      lastItem,
+      async (request: PagedUserItemRequest): Promise<[User[], boolean]> => {
+        return await this.serverFacade.getMoreFollowees(request);
+      },
+    );
   }
 
   public async loadMoreFollowers(
@@ -30,8 +30,33 @@ export class FollowService implements Service {
     pageSize: number,
     lastItem: User | null,
   ): Promise<[User[], boolean]> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfUsers(lastItem, pageSize, userAlias);
+    return await this.getMoreUserItems(
+      authToken.token,
+      userAlias,
+      pageSize,
+      lastItem,
+      async (request: PagedUserItemRequest): Promise<[User[], boolean]> => {
+        return await this.serverFacade.getMoreFollowers(request);
+      },
+    );
+  }
+
+  private async getMoreUserItems(
+    token: string,
+    userAlias: string,
+    pageSize: number,
+    lastItem: User | null,
+    serviceOperation: (
+      request: PagedUserItemRequest,
+    ) => Promise<[User[], boolean]>,
+  ) {
+    const request: PagedUserItemRequest = {
+      token: token,
+      userAlias: userAlias,
+      pageSize: pageSize,
+      lastItem: lastItem,
+    };
+    return await serviceOperation(request);
   }
 
   public async getIsFollowerStatus(
