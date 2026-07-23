@@ -4,6 +4,7 @@ import {
   StatusDto,
 } from "tweeter-shared";
 import { StatusService } from "../../../model/service/StatusService";
+import { ServiceFactory } from "../../factory/ServiceFactory";
 import { handler as parentHandler } from "../../GetItemLambda";
 
 export const handler = async (
@@ -16,8 +17,7 @@ export const handler = async (
     lastItem: StatusDto | null,
   ) => Promise<[StatusDto[], boolean]>,
 ): Promise<PagedStatusItemResponse> => {
-  const statusService: StatusService = new StatusService();
   return await parentHandler(request, (...args) =>
-    serviceOperation(statusService, ...args),
+    serviceOperation(ServiceFactory.statusService, ...args),
   );
 };
