@@ -1,11 +1,13 @@
 import { GetUserResponse, TokenedAliasRequest } from "tweeter-shared";
-import { UserService } from "../../model/service/UserService";
+import { ServiceFactory } from "../factory/ServiceFactory";
 
 export const handler = async (
   request: TokenedAliasRequest,
 ): Promise<GetUserResponse> => {
-  const service = new UserService();
-  const user = await service.getUser(request.token, request.userAlias);
+  const user = await ServiceFactory.userService.getUser(
+    request.token,
+    request.userAlias,
+  );
   return {
     success: true,
     message: null,
