@@ -1,4 +1,6 @@
 import {
+  IsFollowerRequest,
+  IsFollowerResponse,
   PagedItemRequest,
   PagedItemResponse,
   PagedStatusItemRequest,
@@ -61,6 +63,18 @@ export class ServerFacade {
         return items.map((dto) => User.fromDto(dto) as User);
       },
       itemDescription,
+    );
+  }
+
+  public async getIsFollowerStatus(
+    request: IsFollowerRequest,
+  ): Promise<boolean> {
+    return await this.send(
+      request,
+      "/follower/isFollower",
+      (response: IsFollowerResponse): boolean => {
+        return response.isFollower;
+      },
     );
   }
 
