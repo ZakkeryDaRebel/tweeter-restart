@@ -1,11 +1,10 @@
 import { IsFollowerRequest, IsFollowerResponse } from "tweeter-shared";
-import { FollowService } from "../../model/service/FollowService";
+import { ServiceFactory } from "../factory/ServiceFactory";
 
 export const handler = async (
   request: IsFollowerRequest,
 ): Promise<IsFollowerResponse> => {
-  const followService = new FollowService();
-  const isFollower = await followService.getIsFollowerStatus(
+  const isFollower = await ServiceFactory.followService.getIsFollowerStatus(
     request.token,
     request.userAlias,
     request.selectedUserAlias,
