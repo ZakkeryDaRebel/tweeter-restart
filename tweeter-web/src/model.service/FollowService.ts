@@ -4,6 +4,7 @@ import {
   FakeData,
   PagedUserItemRequest,
   IsFollowerRequest,
+  TokenedAliasRequest,
 } from "tweeter-shared";
 import { Service } from "./Service";
 
@@ -77,16 +78,38 @@ export class FollowService extends Service {
     authToken: AuthToken,
     user: User,
   ): Promise<number> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getFolloweeCount(user.alias);
+    return await this.getCount(
+      authToken.token,
+      user.alias,
+      async (request: TokenedAliasRequest): Promise<number> => {
+        return await this.serverFacade.getFolloweeCount(request);
+      },
+    );
   }
 
   public async getFollowerCount(
     authToken: AuthToken,
     user: User,
   ): Promise<number> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getFollowerCount(user.alias);
+    return await this.getCount(
+      authToken.token,
+      user.alias,
+      async (request: TokenedAliasRequest): Promise<number> => {
+        return await this.serverFacade.getFollowerCount(request);
+      },
+    );
+  }
+
+  private async getCount(
+    token: string,
+    alias: string,
+    serviceOperation: (request: TokenedAliasRequest) => Promise<number>,
+  ): Promise<number> {
+    const request: TokenedAliasRequest = {
+      token: token,
+      userAlias: alias,
+    };
+    return await serviceOperation(request);
   }
 
   public async follow(
