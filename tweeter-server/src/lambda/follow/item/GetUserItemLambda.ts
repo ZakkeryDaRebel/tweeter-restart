@@ -4,6 +4,7 @@ import {
   UserDto,
 } from "tweeter-shared";
 import { FollowService } from "../../../model/service/FollowService";
+import { ServiceFactory } from "../../factory/ServiceFactory";
 import { handler as parentHandler } from "../../GetItemLambda";
 
 export const handler = async (
@@ -16,8 +17,7 @@ export const handler = async (
     lastItem: UserDto | null,
   ) => Promise<[UserDto[], boolean]>,
 ): Promise<PagedUserItemResponse> => {
-  const followService = new FollowService();
   return await parentHandler(request, (...args) =>
-    serviceOperation(followService, ...args),
+    serviceOperation(ServiceFactory.followService, ...args),
   );
 };
