@@ -18,6 +18,12 @@ export class ServerFacade {
     return await this.getMoreUserItems(request, "/follow/item/followees");
   }
 
+  public async getMoreFollowers(
+    request: PagedUserItemRequest,
+  ): Promise<[User[], boolean]> {
+    return await this.getMoreUserItems(request, "/follow/item/followers");
+  }
+
   public async getMoreUserItems(
     req: PagedUserItemRequest,
     urlPath: string,
