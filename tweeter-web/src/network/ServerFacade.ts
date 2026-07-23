@@ -1,8 +1,12 @@
 import {
   PagedItemRequest,
   PagedItemResponse,
+  PagedStatusItemRequest,
+  PagedStatusItemResponse,
   PagedUserItemRequest,
   PagedUserItemResponse,
+  Status,
+  StatusDto,
   TweeterRequest,
   TweeterResponse,
   User,
@@ -23,18 +27,27 @@ export class ServerFacade {
   public async getMoreFollowees(
     request: PagedUserItemRequest,
   ): Promise<[User[], boolean]> {
-    return await this.getMoreUserItems(request, "/follow/item/followees");
+    return await this.getMoreUserItems(
+      request,
+      "/follow/item/followees",
+      "followees",
+    );
   }
 
   public async getMoreFollowers(
     request: PagedUserItemRequest,
   ): Promise<[User[], boolean]> {
-    return await this.getMoreUserItems(request, "/follow/item/followers");
+    return await this.getMoreUserItems(
+      request,
+      "/follow/item/followers",
+      "followers",
+    );
   }
 
   public async getMoreUserItems(
-    req: PagedUserItemRequest,
-    urlPath: string,
+    request: PagedUserItemRequest,
+    endpoint: string,
+    itemDescription: string,
   ): Promise<[User[], boolean]> {
     return await this.getMoreItems<
       PagedUserItemRequest,
@@ -42,12 +55,56 @@ export class ServerFacade {
       UserDto,
       PagedUserItemResponse
     >(
-      req,
-      urlPath,
+      request,
+      endpoint,
       (items: UserDto[]) => {
         return items.map((dto) => User.fromDto(dto) as User);
       },
-      "followees",
+      itemDescription,
+    );
+  }
+
+  //
+  // StatusService Methods
+  //
+
+  public async getMoreFeed(
+    request: PagedStatusItemRequest,
+  ): Promise<[Status[], boolean]> {
+    return await this.getMoreStatusItems(
+      request,
+      "/status/item/feed",
+      "feed items",
+    );
+  }
+
+  public async getMoreStory(
+    request: PagedStatusItemRequest,
+  ): Promise<[Status[], boolean]> {
+    return await this.getMoreStatusItems(
+      request,
+      "/status/item/story",
+      "story items",
+    );
+  }
+
+  public async getMoreStatusItems(
+    request: PagedStatusItemRequest,
+    endpoint: string,
+    itemDescription: string,
+  ): Promise<[Status[], boolean]> {
+    return await this.getMoreItems<
+      PagedStatusItemRequest,
+      Status,
+      StatusDto,
+      PagedStatusItemResponse
+    >(
+      request,
+      endpoint,
+      (items: StatusDto[]) => {
+        return items.map((dto) => Status.fromDto(dto) as Status);
+      },
+      itemDescription,
     );
   }
 
