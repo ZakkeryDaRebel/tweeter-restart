@@ -15,10 +15,17 @@ export class ServerFacade {
   public async getMoreFollowees(
     request: PagedUserItemRequest,
   ): Promise<[User[], boolean]> {
+    return await this.getMoreUserItems(request, "/follow/item/followees");
+  }
+
+  public async getMoreUserItems(
+    req: PagedUserItemRequest,
+    urlPath: string,
+  ): Promise<[User[], boolean]> {
     const response = await this.clientCommunicator.doPost<
       PagedUserItemRequest,
       PagedUserItemResponse
-    >(request, "/follow/item/followees");
+    >(req, urlPath);
 
     // Convert the UserDto array returned by ClientCommunicator to a User array
     const items: User[] | null =
