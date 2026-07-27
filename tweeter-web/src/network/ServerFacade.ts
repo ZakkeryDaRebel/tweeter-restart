@@ -1,4 +1,5 @@
 import {
+  FollowCommandResponse,
   GetFollowCountResponse,
   IsFollowerRequest,
   IsFollowerResponse,
@@ -97,6 +98,29 @@ export class ServerFacade {
       endpoint,
       (response: GetFollowCountResponse) => {
         return response.count;
+      },
+    );
+  }
+
+  public async follow(request: TokenedAliasRequest): Promise<[number, number]> {
+    return await this.followCommand(request, "/follow/command/follow");
+  }
+
+  public async unfollow(
+    request: TokenedAliasRequest,
+  ): Promise<[number, number]> {
+    return await this.followCommand(request, "/follow/command/unfollow");
+  }
+
+  private async followCommand(
+    request: TokenedAliasRequest,
+    endpoint: string,
+  ): Promise<[number, number]> {
+    return await this.send(
+      request,
+      endpoint,
+      (response: FollowCommandResponse) => {
+        return [response.followerCount, response.followeeCount];
       },
     );
   }
