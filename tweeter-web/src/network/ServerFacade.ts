@@ -1,6 +1,7 @@
 import {
   FollowCommandResponse,
   GetFollowCountResponse,
+  GetUserResponse,
   IsFollowerRequest,
   IsFollowerResponse,
   PagedItemRequest,
@@ -180,7 +181,15 @@ export class ServerFacade {
   // UserService Methods
   //
 
-  public async getUser(request: TokenedAliasRequest): Promise<User | null> {}
+  public async getUser(request: TokenedAliasRequest): Promise<User | null> {
+    return await this.send(
+      request,
+      "/user/get",
+      (response: GetUserResponse) => {
+        return !!response.user ? User.fromDto(response.user) : null;
+      },
+    );
+  }
 
   //
   // Helper Methods
