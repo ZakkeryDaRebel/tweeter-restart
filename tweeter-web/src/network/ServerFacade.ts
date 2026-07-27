@@ -49,7 +49,7 @@ export class ServerFacade {
     );
   }
 
-  public async getMoreUserItems(
+  private async getMoreUserItems(
     request: PagedUserItemRequest,
     endpoint: string,
     itemDescription: string,
@@ -149,7 +149,7 @@ export class ServerFacade {
     );
   }
 
-  public async getMoreStatusItems(
+  private async getMoreStatusItems(
     request: PagedStatusItemRequest,
     endpoint: string,
     itemDescription: string,
@@ -173,7 +173,7 @@ export class ServerFacade {
   // Helper Methods
   //
 
-  public async getMoreItems<
+  private async getMoreItems<
     T extends PagedItemRequest<D>,
     R,
     D,
@@ -197,7 +197,7 @@ export class ServerFacade {
     });
   }
 
-  public async send<T extends TweeterRequest, R extends TweeterResponse, S>(
+  private async send<T extends TweeterRequest, R extends TweeterResponse, S>(
     request: T,
     endpoint: string,
     onSuccess: (response: R) => S,
