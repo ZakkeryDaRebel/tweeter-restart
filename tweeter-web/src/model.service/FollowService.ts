@@ -1,11 +1,9 @@
 import {
   AuthToken,
   User,
-  FakeData,
   PagedUserItemRequest,
   IsFollowerRequest,
   TokenedAliasRequest,
-  FollowCommandResponse,
 } from "tweeter-shared";
 import { Service } from "./Service";
 
