@@ -1,4 +1,5 @@
 import {
+  AuthenticatedRequest,
   FollowCommandResponse,
   GetFollowCountResponse,
   GetUserResponse,
@@ -190,6 +191,8 @@ export class ServerFacade {
       },
     );
   }
+
+  public async logout(request: AuthenticatedRequest): Promise<void> {}
 
   //
   // Helper Methods
