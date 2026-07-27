@@ -14,6 +14,7 @@ import {
   PagedUserItemRequest,
   PagedUserItemResponse,
   PostStatusRequest,
+  RegisterRequest,
   SignInResponse,
   Status,
   StatusDto,
@@ -214,6 +215,8 @@ export class ServerFacade {
       },
     );
   }
+
+  public async register(request: RegisterRequest): Promise<[User, AuthToken]> {}
 
   //
   // Helper Methods
