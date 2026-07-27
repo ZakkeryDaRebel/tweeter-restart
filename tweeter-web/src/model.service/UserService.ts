@@ -6,6 +6,7 @@ import {
   TokenedAliasRequest,
   AuthenticatedRequest,
   LoginRequest,
+  RegisterRequest,
 } from "tweeter-shared";
 import { Service } from "./Service";
 
@@ -51,13 +52,15 @@ export class UserService extends Service {
     const imageStringBase64: string =
       Buffer.from(userImageBytes).toString("base64");
 
-    // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
+    const request: RegisterRequest = {
+      firstName: firstName,
+      lastName: lastName,
+      userAlias: alias,
+      password: password,
+      imageStringBase64: imageStringBase64,
+      imageFileExtension: imageFileExtension,
+    };
 
-    if (user === null) {
-      throw new Error("Invalid registration");
-    }
-
-    return [user, FakeData.instance.authToken];
+    return await this.serverFacade.register(request);
   }
 }
