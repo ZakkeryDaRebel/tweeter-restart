@@ -14,6 +14,7 @@ import {
   PagedUserItemRequest,
   PagedUserItemResponse,
   PostStatusRequest,
+  SignInResponse,
   Status,
   StatusDto,
   TokenedAliasRequest,
@@ -124,7 +125,7 @@ export class ServerFacade {
     return await this.send(
       request,
       endpoint,
-      (response: FollowCommandResponse) => {
+      (response: FollowCommandResponse): [number, number] => {
         return [response.followerCount, response.followeeCount];
       },
     );
@@ -200,7 +201,19 @@ export class ServerFacade {
     });
   }
 
-  public async login(request: LoginRequest): Promise<[User, AuthToken]> {}
+  public async login(request: LoginRequest): Promise<[User, AuthToken]> {
+    return await this.send(
+      request,
+      "/user/authentication/login",
+      (response: SignInResponse): [User, AuthToken] => {
+        const user = User.fromDto(response.user);
+        if (response.user === null || user === null) {
+          throw new Error("Invalid alias or password");
+        }
+        return [user, response.authToken];
+      },
+    );
+  }
 
   //
   // Helper Methods
