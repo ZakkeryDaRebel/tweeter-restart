@@ -1,4 +1,5 @@
 import {
+  GetFollowCountResponse,
   IsFollowerRequest,
   IsFollowerResponse,
   PagedItemRequest,
@@ -79,13 +80,26 @@ export class ServerFacade {
     );
   }
 
-  public async getFolloweeCount(
-    request: TokenedAliasRequest,
-  ): Promise<number> {}
+  public async getFolloweeCount(request: TokenedAliasRequest): Promise<number> {
+    return await this.getCount(request, "follow/count/followee");
+  }
 
-  public async getFollowerCount(
+  public async getFollowerCount(request: TokenedAliasRequest): Promise<number> {
+    return await this.getCount(request, "follow/count/follower");
+  }
+
+  private async getCount(
     request: TokenedAliasRequest,
-  ): Promise<number> {}
+    endpoint: string,
+  ): Promise<number> {
+    return await this.send(
+      request,
+      endpoint,
+      (response: GetFollowCountResponse) => {
+        return response.count;
+      },
+    );
+  }
 
   //
   // StatusService Methods
