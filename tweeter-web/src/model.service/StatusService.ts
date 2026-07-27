@@ -69,6 +69,6 @@ export class StatusService extends Service {
       userAlias: newStatus.user.alias,
       post: newStatus.post,
     };
-    return await this.serverFacade.postStatus(request);
+    await this.serverFacade.postStatus(request);
   }
 }
