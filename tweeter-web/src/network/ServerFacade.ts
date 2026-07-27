@@ -1,10 +1,12 @@
 import {
   AuthenticatedRequest,
+  AuthToken,
   FollowCommandResponse,
   GetFollowCountResponse,
   GetUserResponse,
   IsFollowerRequest,
   IsFollowerResponse,
+  LoginRequest,
   PagedItemRequest,
   PagedItemResponse,
   PagedStatusItemRequest,
@@ -197,6 +199,8 @@ export class ServerFacade {
       // Do nothing on a success
     });
   }
+
+  public async login(request: LoginRequest): Promise<[User, AuthToken]> {}
 
   //
   // Helper Methods
