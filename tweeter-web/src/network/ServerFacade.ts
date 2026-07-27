@@ -89,11 +89,11 @@ export class ServerFacade {
   }
 
   public async getFolloweeCount(request: TokenedAliasRequest): Promise<number> {
-    return await this.getCount(request, "follow/count/followee");
+    return await this.getCount(request, "/follow/count/followee");
   }
 
   public async getFollowerCount(request: TokenedAliasRequest): Promise<number> {
-    return await this.getCount(request, "follow/count/follower");
+    return await this.getCount(request, "/follow/count/follower");
   }
 
   private async getCount(
