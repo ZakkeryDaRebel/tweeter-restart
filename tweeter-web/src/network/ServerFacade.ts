@@ -9,6 +9,7 @@ import {
   PagedUserItemResponse,
   Status,
   StatusDto,
+  TokenedAliasRequest,
   TweeterRequest,
   TweeterResponse,
   User,
@@ -77,6 +78,14 @@ export class ServerFacade {
       },
     );
   }
+
+  public async getFolloweeCount(
+    request: TokenedAliasRequest,
+  ): Promise<number> {}
+
+  public async getFollowerCount(
+    request: TokenedAliasRequest,
+  ): Promise<number> {}
 
   //
   // StatusService Methods
