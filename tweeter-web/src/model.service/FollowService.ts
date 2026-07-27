@@ -121,7 +121,7 @@ export class FollowService extends Service {
       authToken.token,
       userToFollow.alias,
       async (request: TokenedAliasRequest) => {
-        this.serverFacade.follow(request);
+        return await this.serverFacade.follow(request);
       },
     );
   }
@@ -134,7 +134,7 @@ export class FollowService extends Service {
       authToken.token,
       userToUnfollow.alias,
       async (request: TokenedAliasRequest) => {
-        this.serverFacade.unfollow(request);
+        return await this.serverFacade.unfollow(request);
       },
     );
   }
