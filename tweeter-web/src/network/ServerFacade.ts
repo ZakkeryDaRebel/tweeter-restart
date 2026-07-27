@@ -9,6 +9,7 @@ import {
   PagedStatusItemResponse,
   PagedUserItemRequest,
   PagedUserItemResponse,
+  PostStatusRequest,
   Status,
   StatusDto,
   TokenedAliasRequest,
@@ -167,6 +168,12 @@ export class ServerFacade {
       },
       itemDescription,
     );
+  }
+
+  public async postStatus(request: PostStatusRequest): Promise<void> {
+    await this.send(request, "/status/post", (response: TweeterResponse) => {
+      // Do nothing on a success
+    });
   }
 
   //
