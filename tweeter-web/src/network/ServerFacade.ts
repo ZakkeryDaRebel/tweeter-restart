@@ -177,6 +177,12 @@ export class ServerFacade {
   }
 
   //
+  // UserService Methods
+  //
+
+  public async getUser(request: TokenedAliasRequest): Promise<User | null> {}
+
+  //
   // Helper Methods
   //
 
