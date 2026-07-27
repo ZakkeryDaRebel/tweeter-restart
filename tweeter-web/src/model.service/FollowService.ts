@@ -55,7 +55,7 @@ export class FollowService extends Service {
       token: token,
       userAlias: userAlias,
       pageSize: pageSize,
-      lastItem: lastItem,
+      lastItem: !!lastItem ? lastItem.getDto() : null,
     };
     return await serviceOperation(request);
   }
