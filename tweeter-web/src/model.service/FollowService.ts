@@ -5,6 +5,7 @@ import {
   PagedUserItemRequest,
   IsFollowerRequest,
   TokenedAliasRequest,
+  FollowCommandResponse,
 } from "tweeter-shared";
 import { Service } from "./Service";
 
@@ -116,35 +117,39 @@ export class FollowService extends Service {
     authToken: AuthToken,
     userToFollow: User,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // Pause so we can see the follow message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server
-
-    const followerCount = await this.getFollowerCount(authToken, userToFollow);
-    const followeeCount = await this.getFolloweeCount(authToken, userToFollow);
-
-    return [followerCount, followeeCount];
+    return await this.followCommand(
+      authToken.token,
+      userToFollow.alias,
+      async (request: TokenedAliasRequest) => {
+        this.serverFacade.follow(request);
+      },
+    );
   }
 
   public async unfollow(
     authToken: AuthToken,
     userToUnfollow: User,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // Pause so we can see the unfollow message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server
-
-    const followerCount = await this.getFollowerCount(
-      authToken,
-      userToUnfollow,
+    return await this.followCommand(
+      authToken.token,
+      userToUnfollow.alias,
+      async (request: TokenedAliasRequest) => {
+        this.serverFacade.unfollow(request);
+      },
     );
-    const followeeCount = await this.getFolloweeCount(
-      authToken,
-      userToUnfollow,
-    );
+  }
 
-    return [followerCount, followeeCount];
+  private async followCommand(
+    token: string,
+    userAlias: string,
+    serviceOperation: (
+      request: TokenedAliasRequest,
+    ) => Promise<[number, number]>,
+  ): Promise<[number, number]> {
+    const request: TokenedAliasRequest = {
+      token: token,
+      userAlias: userAlias,
+    };
+    return await serviceOperation(request);
   }
 }
