@@ -1,5 +1,5 @@
 import { Buffer } from "buffer";
-import { AuthToken, User, FakeData } from "tweeter-shared";
+import { AuthToken, User, FakeData, TokenedAliasRequest } from "tweeter-shared";
 import { Service } from "./Service";
 
 export class UserService extends Service {
@@ -7,8 +7,11 @@ export class UserService extends Service {
     authToken: AuthToken,
     alias: string,
   ): Promise<User | null> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.findUserByAlias(alias);
+    const request: TokenedAliasRequest = {
+      token: authToken.token,
+      userAlias: alias,
+    };
+    return await this.serverFacade.getUser(request);
   }
 
   public async logout(authToken: AuthToken): Promise<void> {
