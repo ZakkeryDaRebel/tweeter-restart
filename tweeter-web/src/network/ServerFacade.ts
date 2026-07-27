@@ -203,9 +203,20 @@ export class ServerFacade {
   }
 
   public async login(request: LoginRequest): Promise<[User, AuthToken]> {
+    return await this.signIn(request, "/user/authentication/login");
+  }
+
+  public async register(request: RegisterRequest): Promise<[User, AuthToken]> {
+    return await this.signIn(request, "/user/authentication/register");
+  }
+
+  private async signIn(
+    request: LoginRequest | RegisterRequest,
+    endpoint: string,
+  ): Promise<[User, AuthToken]> {
     return await this.send(
       request,
-      "/user/authentication/login",
+      endpoint,
       (response: SignInResponse): [User, AuthToken] => {
         const user = User.fromDto(response.user);
         if (response.user === null || user === null) {
@@ -215,8 +226,6 @@ export class ServerFacade {
       },
     );
   }
-
-  public async register(request: RegisterRequest): Promise<[User, AuthToken]> {}
 
   //
   // Helper Methods
