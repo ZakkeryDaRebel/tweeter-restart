@@ -192,7 +192,11 @@ export class ServerFacade {
     );
   }
 
-  public async logout(request: AuthenticatedRequest): Promise<void> {}
+  public async logout(request: AuthenticatedRequest): Promise<void> {
+    await this.send(request, "/user/logout", (response: TweeterResponse) => {
+      // Do nothing on a success
+    });
+  }
 
   //
   // Helper Methods
