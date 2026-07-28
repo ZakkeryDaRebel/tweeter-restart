@@ -1,4 +1,4 @@
-import { AuthToken, SignInResponse, UserDto } from "tweeter-shared";
+import { SignInResponse, UserDto } from "tweeter-shared";
 import { UserService } from "../../../model/service/UserService";
 import { ServiceFactory } from "../../factory/ServiceFactory";
 
