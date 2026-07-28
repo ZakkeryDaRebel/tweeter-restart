@@ -4,5 +4,5 @@ import { TweeterResponse } from "./TweeterResponse";
 
 export interface SignInResponse extends TweeterResponse {
   user: UserDto;
-  authToken: AuthToken;
+  token: string;
 }
