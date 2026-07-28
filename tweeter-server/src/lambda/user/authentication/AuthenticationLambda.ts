@@ -3,13 +3,13 @@ import { UserService } from "../../../model/service/UserService";
 import { ServiceFactory } from "../../factory/ServiceFactory";
 
 export const handler = async (
-  serviceOperation: (service: UserService) => Promise<[UserDto, AuthToken]>,
+  serviceOperation: (service: UserService) => Promise<[UserDto, string]>,
 ): Promise<SignInResponse> => {
-  const [user, authToken] = await serviceOperation(ServiceFactory.userService);
+  const [user, token] = await serviceOperation(ServiceFactory.userService);
   return {
     success: true,
     message: null,
     user: user,
-    authToken: authToken,
+    token: token,
   };
 };
