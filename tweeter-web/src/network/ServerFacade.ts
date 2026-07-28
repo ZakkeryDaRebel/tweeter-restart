@@ -222,7 +222,7 @@ export class ServerFacade {
         if (response.user === null || user === null) {
           throw new Error("Invalid alias or password");
         }
-        return [user, response.authToken];
+        return [user, new AuthToken(response.token, Date.now())];
       },
     );
   }
