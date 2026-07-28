@@ -16,7 +16,7 @@ export class UserService implements Service {
   public async login(
     alias: string,
     password: string,
-  ): Promise<[UserDto, AuthToken]> {
+  ): Promise<[UserDto, string]> {
     return await this.fakeDataSignIn();
   }
 
@@ -27,11 +27,11 @@ export class UserService implements Service {
     password: string,
     imageStringBase64: string,
     imageFileExtension: string,
-  ): Promise<[UserDto, AuthToken]> {
+  ): Promise<[UserDto, string]> {
     return await this.fakeDataSignIn();
   }
 
-  private async fakeDataSignIn(): Promise<[UserDto, AuthToken]> {
+  private async fakeDataSignIn(): Promise<[UserDto, string]> {
     // TODO: Replace with the result of calling the server
     const user = FakeData.instance.firstUser;
 
@@ -39,6 +39,6 @@ export class UserService implements Service {
       throw new Error("Invalid registration");
     }
 
-    return [user.getDto(), FakeData.instance.authToken];
+    return [user.getDto(), FakeData.instance.authToken.token];
   }
 }
