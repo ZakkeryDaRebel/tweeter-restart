@@ -3,6 +3,7 @@ import {
   RegisterRequest,
   User,
   PagedUserItemRequest,
+  TokenedAliasRequest,
 } from "tweeter-shared";
 import { ServerFacade } from "../../src/network/ServerFacade";
 import "isomorphic-fetch";
@@ -106,5 +107,17 @@ describe("ServerFacade Integration tests", () => {
       expect(user.lastName).toEqual(fakeDataUsers[i + pageSize].lastName);
     }
     expect(newHasMore).toBe(false);
+  });
+
+  it("gets followers count", async () => {
+    const request: TokenedAliasRequest = {
+      userAlias: "@Alias",
+      token: "1234",
+    };
+
+    const count = await serverFacade.getFollowerCount(request);
+
+    expect(count).toBeLessThanOrEqual(10);
+    expect(count).toBeGreaterThanOrEqual(1);
   });
 });
