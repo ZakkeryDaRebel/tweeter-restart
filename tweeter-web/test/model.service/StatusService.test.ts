@@ -1,4 +1,4 @@
-import { AuthToken, User } from "tweeter-shared";
+import { AuthToken, Status, User } from "tweeter-shared";
 import { StatusService } from "../../src/model.service/StatusService";
 import "isomorphic-fetch";
 
@@ -30,17 +30,23 @@ const fakeDataUsers: User[] = [
 ];
 
 describe("StatusService tests", () => {
+  const authToken: AuthToken = new AuthToken("1234", Date.now());
+  const userAlias: string = "@Alias";
+  const pageSize: number = 10;
+
   it("returns a user's story pages", async () => {
+    const lastItem: Status = await getStatusItems(null, 0);
+    await getStatusItems(lastItem, pageSize);
+  });
+
+  async function getStatusItems(lastItem: Status | null, offset: number) {
     const statusService: StatusService = new StatusService();
-    const authToken: AuthToken = new AuthToken("1234", Date.now());
-    const userAlias: string = "@Alias";
-    const pageSize: number = 10;
 
     const [storyItems, hasMore] = await statusService.loadMoreStoryItems(
       authToken,
       userAlias,
       pageSize,
-      null,
+      lastItem,
     );
 
     expect(storyItems).not.toBeNull();
@@ -51,13 +57,19 @@ describe("StatusService tests", () => {
           .endsWith(`likes this website: http://byu.edu. Do you? 
         Or do you prefer this one: http://cs.byu.edu?`),
       );
-      expect(storyItems[i].timestamp).toEqual(30000000000 * i);
+      expect(storyItems[i].timestamp).toEqual(30000000000 * (i + offset));
       expect(storyItems[i].user).not.toBeNull();
-      expect(storyItems[i].user.alias).toEqual(fakeDataUsers[i].alias);
-      expect(storyItems[i].user.firstName).toEqual(fakeDataUsers[i].firstName);
-      expect(storyItems[i].user.lastName).toEqual(fakeDataUsers[i].lastName);
+      expect(storyItems[i].user.alias).toEqual(fakeDataUsers[i + offset].alias);
+      expect(storyItems[i].user.firstName).toEqual(
+        fakeDataUsers[i + offset].firstName,
+      );
+      expect(storyItems[i].user.lastName).toEqual(
+        fakeDataUsers[i + offset].lastName,
+      );
     }
 
     expect(hasMore).toBe(true);
-  });
+
+    return storyItems[storyItems.length - 1];
+  }
 });
