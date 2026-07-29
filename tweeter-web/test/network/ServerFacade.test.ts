@@ -39,6 +39,7 @@ const fakeDataUsers: User[] = [
 describe("ServerFacade Integration tests", () => {
   const serverFacade: ServerFacade = new ServerFacade();
   const timeNow = Date.now();
+  const pageSize = 15;
 
   it("sends a register request", async () => {
     const request: RegisterRequest = {
@@ -65,48 +66,23 @@ describe("ServerFacade Integration tests", () => {
   });
 
   it("gets Followers", async () => {
-    const pageSize: number = 15;
-    const request: PagedUserItemRequest = {
+    let request: PagedUserItemRequest = {
       token: "1234",
       userAlias: "@Alias",
       pageSize: pageSize,
       lastItem: null,
     };
 
-    const [users, hasMore] = await serverFacade.getMoreFollowers(request);
+    let lastUser: User = await getUserItems(request, 0, true);
 
-    expect(users).not.toBeNull();
-    expect(users.length).toEqual(pageSize);
-    for (let i = 0; i < pageSize; i++) {
-      let user = users[i];
-      expect(user).not.toBeNull();
-      expect(user.alias).toEqual(fakeDataUsers[i].alias);
-      expect(user.firstName).toEqual(fakeDataUsers[i].firstName);
-      expect(user.lastName).toEqual(fakeDataUsers[i].lastName);
-    }
-    expect(hasMore).toBe(true);
-
-    const lastItem: User = users[pageSize - 1];
-    const newRequest: PagedUserItemRequest = {
+    request = {
       token: "1234",
       userAlias: "@Alias",
       pageSize: pageSize,
-      lastItem: lastItem.getDto(),
+      lastItem: lastUser.getDto(),
     };
 
-    const [newUsers, newHasMore] =
-      await serverFacade.getMoreFollowers(newRequest);
-
-    expect(newUsers).not.toBeNull();
-    expect(newUsers.length).toBeLessThan(pageSize);
-    for (let i = 0; i < newUsers.length; i++) {
-      let user = newUsers[i];
-      expect(user).not.toBeNull();
-      expect(user.alias).toEqual(fakeDataUsers[i + pageSize].alias);
-      expect(user.firstName).toEqual(fakeDataUsers[i + pageSize].firstName);
-      expect(user.lastName).toEqual(fakeDataUsers[i + pageSize].lastName);
-    }
-    expect(newHasMore).toBe(false);
+    await getUserItems(request, pageSize, false);
   });
 
   it("gets followers count", async () => {
@@ -120,4 +96,30 @@ describe("ServerFacade Integration tests", () => {
     expect(count).toBeLessThanOrEqual(10);
     expect(count).toBeGreaterThanOrEqual(1);
   });
+
+  async function getUserItems(
+    request: PagedUserItemRequest,
+    offset: number,
+    expectedHasMore: boolean,
+  ): Promise<User> {
+    const [users, hasMore] = await serverFacade.getMoreFollowers(request);
+
+    expect(users).not.toBeNull();
+    if (expectedHasMore) {
+      expect(users.length).toEqual(pageSize);
+    } else {
+      expect(users.length).toBeLessThan(pageSize);
+    }
+
+    for (let i = 0; i < users.length; i++) {
+      let user = users[i];
+      expect(user).not.toBeNull();
+      expect(user.alias).toEqual(fakeDataUsers[i + offset].alias);
+      expect(user.firstName).toEqual(fakeDataUsers[i + offset].firstName);
+      expect(user.lastName).toEqual(fakeDataUsers[i + offset].lastName);
+    }
+    expect(hasMore).toBe(expectedHasMore);
+
+    return users[users.length - 1];
+  }
 });
