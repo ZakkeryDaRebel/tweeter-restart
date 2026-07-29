@@ -57,5 +57,7 @@ describe("StatusService tests", () => {
       expect(storyItems[i].user.firstName).toEqual(fakeDataUsers[i].firstName);
       expect(storyItems[i].user.lastName).toEqual(fakeDataUsers[i].lastName);
     }
+
+    expect(hasMore).toBe(true);
   });
 });
