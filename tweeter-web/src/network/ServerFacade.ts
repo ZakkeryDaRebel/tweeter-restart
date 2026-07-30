@@ -81,7 +81,7 @@ export class ServerFacade {
   ): Promise<boolean> {
     return await this.send(
       request,
-      "/follower/isFollower",
+      "/follow/isFollower",
       (response: IsFollowerResponse): boolean => {
         return response.isFollower;
       },
