@@ -1,11 +1,15 @@
-import { AuthToken, User, FakeData, UserDto } from "tweeter-shared";
+import { User, FakeData, UserDto } from "tweeter-shared";
+import { DAOFactory } from "../../dao/factory/DAOFactory";
 import { Service } from "./Service";
 
 export class UserService implements Service {
   public async getUser(token: string, alias: string): Promise<UserDto | null> {
-    // TODO: Replace with the result of calling server
-    const dbUser: User | null = FakeData.instance.findUserByAlias(alias);
-    return dbUser == null ? null : dbUser.getDto();
+    const [authToken, userAlias] = DAOFactory.authDAO.getAuth(token);
+    if (!authToken || !userAlias) {
+      throw new Error("Error: Unauthorized");
+    }
+    const user: User | null = DAOFactory.userDAO.getUser(alias);
+    return !!user ? user.getDto() : null;
   }
 
   public async logout(token: string): Promise<void> {
