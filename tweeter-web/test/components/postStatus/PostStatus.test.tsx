@@ -1,4 +1,4 @@
-// import { render, screen } from "@testing-library/react";
+// import { fireEvent, render, screen } from "@testing-library/react";
 // import { MemoryRouter } from "react-router-dom";
 // import PostStatus from "../../../src/components/postStatus/PostStatus";
 // import userEvent from "@testing-library/user-event";
@@ -52,7 +52,12 @@
 //     expect(postStatusButton).toBeDisabled();
 //     expect(clearButton).toBeDisabled();
 
-//     await user.type(textField, "a");
+//     // await user.type(textField, "a");
+//     fireEvent.change(textField, {
+//       target: {
+//         value: post,
+//       },
+//     });
 //     await user.clear(textField);
 
 //     expect(textField).toBeEmptyDOMElement;
@@ -74,7 +79,12 @@
 
 // function renderPostStatus(presenter?: PostStatusPresenter) {
 //   return render(
-//     <MemoryRouter>
+//     <MemoryRouter
+//       future={{
+//         v7_startTransition: true,
+//         v7_relativeSplatPath: true,
+//       }}
+//     >
 //       {!!presenter ? <PostStatus presenter={presenter} /> : <PostStatus />}
 //     </MemoryRouter>,
 //   );
@@ -96,7 +106,12 @@
 //   const { postStatusButton, clearButton, user, textField } =
 //     renderPostStatusAndGetElements(presenter);
 
-//   await user.type(textField, post);
+//   //   await user.type(textField, post);
+//   fireEvent.change(textField, {
+//     target: {
+//       value: post,
+//     },
+//   });
 
 //   expect(postStatusButton).toBeEnabled();
 //   expect(clearButton).toBeEnabled();

@@ -56,7 +56,12 @@
 
 // function renderLogin(originalUrl: string, presenter?: LoginPresenter) {
 //   return render(
-//     <MemoryRouter>
+//     <MemoryRouter
+//       future={{
+//         v7_startTransition: true,
+//         v7_relativeSplatPath: true,
+//       }}
+//     >
 //       {!!presenter ? (
 //         <Login originalUrl={originalUrl} presenter={presenter}></Login>
 //       ) : (
