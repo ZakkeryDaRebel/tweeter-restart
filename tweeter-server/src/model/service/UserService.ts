@@ -1,20 +1,20 @@
-import { User, FakeData, UserDto } from "tweeter-shared";
+import { User, AuthToken, FakeData, UserDto } from "tweeter-shared";
 import { DAOFactory } from "../../dao/factory/DAOFactory";
+import { AuthService } from "./AuthService";
 import { Service } from "./Service";
+import bcrypt from "bcryptjs";
 
 export class UserService implements Service {
   public async getUser(token: string, alias: string): Promise<UserDto | null> {
-    const [authToken, userAlias] = DAOFactory.authDAO.getAuth(token);
-    if (!authToken || !userAlias) {
-      throw new Error("Error: Unauthorized");
-    }
-    const user: User | null = DAOFactory.userDAO.getUser(alias);
-    return !!user ? user.getDto() : null;
+    return await new AuthService().authenticatedAction(token, async () => {
+      const user: User | null = await DAOFactory.userDAO.getUser(alias);
+      return !!user ? user.getDto() : null;
+    });
   }
 
   public async logout(token: string): Promise<void> {
-    // Pause so we can see the logging out message. Delete when the call to the server is implemented.
-    await new Promise((res) => setTimeout(res, 1000));
+    await new AuthService().getAuth(token);
+    DAOFactory.authDAO.deleteAuth(token);
   }
 
   public async login(
@@ -32,6 +32,22 @@ export class UserService implements Service {
     imageStringBase64: string,
     imageFileExtension: string,
   ): Promise<[UserDto, string]> {
+    const user: User | null = DAOFactory.userDAO.getUser(alias);
+    if (!!user) {
+      throw new Error("Error: Alias is already taken");
+    }
+    const imageUrl: string = DAOFactory.imageDAO.createImage(
+      imageStringBase64,
+      imageFileExtension,
+    );
+    const newUser = new User(firstName, lastName, alias, imageUrl);
+    const hashedPassword: string = await bcrypt.hash(
+      password,
+      await bcrypt.genSalt(),
+    );
+    DAOFactory.userDAO.createUser(newUser, hashedPassword);
+    const authToken = AuthToken.Generate();
+    await DAOFactory.authDAO.createAuth(authToken, alias);
     return await this.fakeDataSignIn();
   }
 
