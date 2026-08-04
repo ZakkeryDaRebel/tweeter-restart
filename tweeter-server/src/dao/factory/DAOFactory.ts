@@ -4,14 +4,7 @@ import { ImageDAO } from "../image/ImageDAO";
 import { StoryDAO } from "../story/StoryDAO";
 import { UserDAO } from "../user/UserDAO";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  DeleteCommand,
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  QueryCommand,
-  UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBUserDAO } from "../user/DynamoDBUserDAO";
 
 export class DAOFactory {
