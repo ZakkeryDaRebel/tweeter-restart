@@ -12,6 +12,7 @@ import {
   QueryCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBUserDAO } from "../user/DynamoDBUserDAO";
 
 export class DAOFactory {
   private constructor() {}
@@ -23,5 +24,7 @@ export class DAOFactory {
   public static readonly followDAO: FollowDAO;
   public static readonly imageDAO: ImageDAO;
   public static readonly storyDAO: StoryDAO;
-  public static readonly userDAO: UserDAO;
+  public static readonly userDAO: UserDAO = new DynamoDBUserDAO(
+    this.dynamoDBClient,
+  );
 }
