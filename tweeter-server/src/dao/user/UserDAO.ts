@@ -1,6 +1,15 @@
 import { User } from "tweeter-shared";
 
 export interface UserDAO {
-  createUser(user: User, hashedPassword: string): void;
-  getUser(alias: String): User;
+  createUser(user: User, hashedPassword: string): Promise<void>;
+  getUser(
+    alias: String,
+  ): Promise<
+    [
+      user: User,
+      hashedPassword: string,
+      followeeCount: number,
+      followerCount: number,
+    ]
+  >;
 }
