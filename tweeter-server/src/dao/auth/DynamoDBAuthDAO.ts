@@ -2,6 +2,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { AuthToken } from "tweeter-shared";
 import { AuthDAO } from "./AuthDAO";
@@ -49,9 +50,18 @@ export class DynamoDBAuthDAO implements AuthDAO {
     return [authToken, output.Item[this.aliasAttr]];
   }
 
-  updateAuth(authToken: AuthToken): void {
-    throw new Error("Method not implemented.");
+  async updateAuth(authToken: AuthToken): Promise<void> {
+    const params = {
+      TableName: this.tableName,
+      Key: {
+        [this.tokenAttr]: authToken.token,
+      },
+      ExpressionAttributeValues: { ":newTime": authToken.timestamp },
+      UpdateExpression: "SET " + this.timestampAttr + " = :newTime",
+    };
+    await this.client.send(new UpdateCommand(params));
   }
+
   deleteAuth(token: string): void {
     throw new Error("Method not implemented.");
   }
