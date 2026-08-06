@@ -1,4 +1,5 @@
 import {
+  DeleteCommand,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -62,7 +63,13 @@ export class DynamoDBAuthDAO implements AuthDAO {
     await this.client.send(new UpdateCommand(params));
   }
 
-  deleteAuth(token: string): void {
-    throw new Error("Method not implemented.");
+  async deleteAuth(token: string): Promise<void> {
+    const params = {
+      TableName: this.tableName,
+      Key: {
+        [this.tokenAttr]: token,
+      },
+    };
+    await this.client.send(new DeleteCommand(params));
   }
 }
