@@ -1,4 +1,5 @@
 import {
+  DeleteCommand,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -52,7 +53,17 @@ export class DynamoDBFollowDAO implements FollowDAO {
     return output.Item === undefined ? false : true;
   }
 
-  deleteFollow(userAlias: string, selectedUserAlias: string): void {
-    //code
+  async deleteFollow(
+    userAlias: string,
+    selectedUserAlias: string,
+  ): Promise<void> {
+    const params = {
+      TableName: this.tableName,
+      Key: {
+        [this.followeeAttr]: userAlias,
+        [this.followerAttr]: selectedUserAlias,
+      },
+    };
+    await this.client.send(new DeleteCommand(params));
   }
 }
