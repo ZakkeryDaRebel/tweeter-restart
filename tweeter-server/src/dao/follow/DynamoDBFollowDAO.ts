@@ -1,4 +1,8 @@
-import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { FollowDAO } from "./FollowDAO";
 
 /*
@@ -33,9 +37,19 @@ export class DynamoDBFollowDAO implements FollowDAO {
     await this.client.send(new PutCommand(params));
   }
 
-  getIsFollow(userAlias: string, selectedUserAlias: string): boolean {
-    // code
-    return false;
+  async getIsFollow(
+    userAlias: string,
+    selectedUserAlias: string,
+  ): Promise<boolean> {
+    const params = {
+      TableName: this.tableName,
+      Key: {
+        [this.followeeAttr]: userAlias,
+        [this.followerAttr]: selectedUserAlias,
+      },
+    };
+    const output = await this.client.send(new GetCommand(params));
+    return output.Item === undefined ? false : true;
   }
 
   deleteFollow(userAlias: string, selectedUserAlias: string): void {
