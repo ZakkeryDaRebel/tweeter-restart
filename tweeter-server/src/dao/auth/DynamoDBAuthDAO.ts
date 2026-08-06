@@ -1,4 +1,8 @@
-import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { AuthToken } from "tweeter-shared";
 import { AuthDAO } from "./AuthDAO";
 
@@ -25,9 +29,26 @@ export class DynamoDBAuthDAO implements AuthDAO {
     await this.client.send(new PutCommand(params));
   }
 
-  getAuth(token: string): [authToken: AuthToken, userAlias: string] {
-    throw new Error("Method not implemented.");
+  async getAuth(
+    token: string,
+  ): Promise<[authToken: AuthToken, userAlias: string]> {
+    const params = {
+      TableName: this.tableName,
+      Key: {
+        [this.tokenAttr]: token,
+      },
+    };
+    const output = await this.client.send(new GetCommand(params));
+    if (output.Item === undefined) {
+      throw new Error("Unauthorized");
+    }
+    const authToken = new AuthToken(
+      output.Item[this.tokenAttr],
+      output.Item[this.timestampAttr],
+    );
+    return [authToken, output.Item[this.aliasAttr]];
   }
+
   updateAuth(authToken: AuthToken): void {
     throw new Error("Method not implemented.");
   }
