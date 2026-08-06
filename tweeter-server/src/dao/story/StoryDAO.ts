@@ -1,6 +1,6 @@
 import { Status } from "tweeter-shared";
 
 export interface StoryDAO {
-  createStory(post: Status): void;
-  getStory(postAlias: string, timestamp: number): Status;
+  createStory(post: Status): Promise<void>;
+  getStory(postAlias: string, timestamp: number): Promise<Status>;
 }
