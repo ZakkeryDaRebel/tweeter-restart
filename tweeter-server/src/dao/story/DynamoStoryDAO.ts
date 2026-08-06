@@ -1,4 +1,8 @@
-import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { Status } from "tweeter-shared";
 import { StoryDAO } from "./StoryDAO";
 
@@ -26,7 +30,25 @@ export class DynamoStoryDAO implements StoryDAO {
     await this.client.send(new PutCommand(params));
   }
 
-  getStory(postAlias: string, timestamp: number): Status {
-    throw new Error("Method not implemented.");
+  async getStory(
+    postAlias: string,
+    timestamp: number,
+  ): Promise<[string, string, number]> {
+    const params = {
+      TableName: this.tableName,
+      Key: {
+        [this.aliasAttr]: postAlias,
+        [this.timestampAttr]: timestamp,
+      },
+    };
+    const output = await this.client.send(new GetCommand(params));
+    if (output.Item === undefined) {
+      throw new Error("No such story item exists");
+    }
+    return [
+      output.Item[this.aliasAttr],
+      output.Item[this.postAttr],
+      output.Item[this.timestampAttr],
+    ];
   }
 }
