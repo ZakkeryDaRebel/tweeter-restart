@@ -1,5 +1,5 @@
 export interface FollowDAO {
-  createFollow(userAlias: string, selectedUserAlias: string): void;
-  getIsFollow(userAlias: string, selectedUserAlias: string): boolean;
-  deleteFollow(userAlias: string, selectedUserAlias: string): void;
+  createFollow(userAlias: string, selectedUserAlias: string): Promise<void>;
+  getIsFollow(userAlias: string, selectedUserAlias: string): Promise<boolean>;
+  deleteFollow(userAlias: string, selectedUserAlias: string): Promise<void>;
 }
