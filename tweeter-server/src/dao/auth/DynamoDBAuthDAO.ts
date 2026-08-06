@@ -19,6 +19,7 @@ export class DynamoDBAuthDAO implements AuthDAO {
   public constructor(client: DynamoDBDocumentClient) {
     this.client = client;
   }
+
   async createAuth(authToken: AuthToken, userAlias: string): Promise<void> {
     const params = {
       TableName: this.tableName,
