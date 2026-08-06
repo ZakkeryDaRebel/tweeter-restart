@@ -6,4 +6,9 @@ export interface StoryDAO {
     postAlias: string,
     timestamp: number,
   ): Promise<[alias: string, post: string, timestamp: number]>;
+  getPageOfStories(
+    postAlias: string,
+    lastStoryItem: Status,
+    pageSize: number,
+  ): Promise<[aliases: string[], posts: string[], times: number[]]>;
 }
