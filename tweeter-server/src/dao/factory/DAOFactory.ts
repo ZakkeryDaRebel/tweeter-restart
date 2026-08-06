@@ -6,6 +6,7 @@ import { UserDAO } from "../user/UserDAO";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBUserDAO } from "../user/DynamoDBUserDAO";
+import { DynamoDBAuthDAO } from "../auth/DynamoDBAuthDAO";
 
 export class DAOFactory {
   private constructor() {}
@@ -13,7 +14,9 @@ export class DAOFactory {
     new DynamoDBClient(),
   );
 
-  public static readonly authDAO: AuthDAO;
+  public static readonly authDAO: AuthDAO = new DynamoDBAuthDAO(
+    this.dynamoDBClient,
+  );
   public static readonly followDAO: FollowDAO;
   public static readonly imageDAO: ImageDAO;
   public static readonly storyDAO: StoryDAO;
