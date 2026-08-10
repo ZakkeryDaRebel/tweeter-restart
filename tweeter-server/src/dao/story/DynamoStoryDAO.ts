@@ -15,15 +15,11 @@ export class DynamoStoryDAO extends DAOService implements StoryDAO {
   private readonly postAttr = "post";
 
   async createStory(post: Status): Promise<void> {
-    const params = {
-      TableName: this.tableName,
-      Item: {
-        [this.aliasAttr]: post.user.alias,
-        [this.timestampAttr]: post.timestamp,
-        [this.postAttr]: post.post,
-      },
-    };
-    await this.client.send(new PutCommand(params));
+    await this.putDynamo(this.tableName, {
+      [this.aliasAttr]: post.user.alias,
+      [this.timestampAttr]: post.timestamp,
+      [this.postAttr]: post.post,
+    });
   }
 
   async getStory(
