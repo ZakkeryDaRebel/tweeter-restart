@@ -2,6 +2,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { Status } from "tweeter-shared";
 import { StoryDAO } from "./StoryDAO";
@@ -50,5 +51,42 @@ export class DynamoStoryDAO implements StoryDAO {
       output.Item[this.postAttr],
       output.Item[this.timestampAttr],
     ];
+  }
+
+  async getPageOfStories(
+    postAlias: string,
+    lastStoryItem: Status | null,
+    pageSize: number,
+  ): Promise<
+    [aliases: string[], posts: string[], times: number[], hasMore: boolean]
+  > {
+    const params = {
+      KeyConditionExpression: this.aliasAttr + " = :u",
+      ExpressionAttributeValues: {
+        ":u": postAlias,
+      },
+      TableName: this.tableName,
+      Limit: pageSize,
+      ExclusiveStartKey: !!lastStoryItem
+        ? {
+            [this.aliasAttr]: lastStoryItem.user.alias,
+            [this.timestampAttr]: lastStoryItem.timestamp,
+          }
+        : undefined,
+    };
+    const data = await this.client.send(new QueryCommand(params));
+    const hasMore = data.LastEvaluatedKey !== undefined;
+    if (data.Items === undefined) {
+      throw Error("no story items found");
+    }
+    const aliases: string[] = [];
+    const posts: string[] = [];
+    const timestamps: number[] = [];
+    data.Items.forEach((item) => {
+      aliases.push(item[this.aliasAttr]);
+      posts.push(item[this.postAttr]);
+      timestamps.push(item[this.timestampAttr]);
+    });
+    return [aliases, posts, timestamps, hasMore];
   }
 }
