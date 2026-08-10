@@ -33,15 +33,16 @@ export class DynamoDBFollowDAO extends DAOService implements FollowDAO {
     userAlias: string,
     selectedUserAlias: string,
   ): Promise<boolean> {
-    const params = {
-      TableName: this.tableName,
-      Key: {
+    return await this.getDynamo(
+      this.tableName,
+      {
         [this.followeeAttr]: userAlias,
         [this.followerAttr]: selectedUserAlias,
       },
-    };
-    const output = await this.client.send(new GetCommand(params));
-    return output.Item === undefined ? false : true;
+      (output) => {
+        return output.Item === undefined ? false : true;
+      },
+    );
   }
 
   async deleteFollow(
