@@ -1,23 +1,18 @@
 import {
-  DynamoDBDocumentClient,
   GetCommand,
+  GetCommandOutput,
   PutCommand,
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { Status } from "tweeter-shared";
+import { DAOService } from "../DAOService";
 import { StoryDAO } from "./StoryDAO";
 
-export class DynamoStoryDAO implements StoryDAO {
+export class DynamoStoryDAO extends DAOService implements StoryDAO {
   private readonly tableName = "story";
   private readonly aliasAttr = "alias"; //hash
   private readonly timestampAttr = "timestamp"; //sort
   private readonly postAttr = "post";
-
-  private readonly client: DynamoDBDocumentClient;
-
-  public constructor(client: DynamoDBDocumentClient) {
-    this.client = client;
-  }
 
   async createStory(post: Status): Promise<void> {
     const params = {
@@ -35,22 +30,23 @@ export class DynamoStoryDAO implements StoryDAO {
     postAlias: string,
     timestamp: number,
   ): Promise<[string, string, number]> {
-    const params = {
-      TableName: this.tableName,
-      Key: {
+    return await this.getDynamo(
+      this.tableName,
+      {
         [this.aliasAttr]: postAlias,
         [this.timestampAttr]: timestamp,
       },
-    };
-    const output = await this.client.send(new GetCommand(params));
-    if (output.Item === undefined) {
-      throw new Error("No such story item exists");
-    }
-    return [
-      output.Item[this.aliasAttr],
-      output.Item[this.postAttr],
-      output.Item[this.timestampAttr],
-    ];
+      (output: GetCommandOutput) => {
+        if (output.Item === undefined) {
+          throw new Error("No such story item exists");
+        }
+        return [
+          output.Item[this.aliasAttr],
+          output.Item[this.postAttr],
+          output.Item[this.timestampAttr],
+        ];
+      },
+    );
   }
 
   async getPageOfStories(
