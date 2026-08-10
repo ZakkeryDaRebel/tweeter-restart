@@ -2,6 +2,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   GetCommandOutput,
+  PutCommand,
 } from "@aws-sdk/lib-dynamodb";
 
 export class DAOService {
@@ -28,8 +29,11 @@ export class DAOService {
     return outputMethod(output);
   }
 
-  protected async putDynamo<T>(): Promise<void> {
-    const params = {};
-    return;
+  protected async putDynamo<T>(tableName: string, key: any): Promise<void> {
+    const params = {
+      TableName: tableName,
+      Item: key,
+    };
+    await this.client.send(new PutCommand(params));
   }
 }
