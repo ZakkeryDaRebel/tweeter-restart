@@ -10,5 +10,7 @@ export interface StoryDAO {
     postAlias: string,
     lastStoryItem: Status | null,
     pageSize: number,
-  ): Promise<[aliases: string[], posts: string[], times: number[]]>;
+  ): Promise<
+    [aliases: string[], posts: string[], times: number[], hasMore: boolean]
+  >;
 }
